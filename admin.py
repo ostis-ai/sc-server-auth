@@ -6,6 +6,9 @@ from common import get_response_message
 from verifiers import username_verifier
 import requests
 from config import params
+from log import get_default_logger
+
+log = get_default_logger(__name__)
 
 router = APIRouter(
         prefix="/admin",
@@ -27,6 +30,7 @@ def _verify_user_info_in_database(database: DataBase, name: str, password: str) 
 @router.post("/user", response_model=Response)
 async def create_user(user: UserInCreate):
     user_info = user.dict()
+    log.info(user_info)
     database = DataBase()
     msg_desc = _verify_user_info_in_database(
             database,
@@ -41,17 +45,20 @@ async def create_user(user: UserInCreate):
             database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
         else:
             response = get_response_message(cnt.MSG_SC_SERVER_ERROR)
+    log.info(response)
     return response
 
 @router.delete("/user", response_model=Response)
 async def delete_user(user: UserIn):
     user_info = user.dict()
+    log.info(user_info)
     database = DataBase()
     delete_users_count = database.delete_user_by_name(user_info[cnt.NAME])
     if delete_users_count == 0:
         response = get_response_message(cnt.MSG_USER_NOT_FOUND)
     else:
         response = get_response_message(cnt.MSG_ALL_DONE)
+    log.info(response)
     return response
 
 
@@ -59,5 +66,6 @@ async def delete_user(user: UserIn):
 async def get_users(token: Token):
     database = DataBase()
     users = database.get_users()
+    log.info(users)
     return users
 

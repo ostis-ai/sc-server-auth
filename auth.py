@@ -8,6 +8,9 @@ from config import params
 from database import DataBase
 from os.path import isfile
 from common import get_response_message
+from log import get_default_logger
+
+log = get_default_logger(__name__)
 
 router = APIRouter(
         prefix="/auth",
@@ -41,6 +44,7 @@ def _generate_keys() -> None:
 @router.post("/get_tokens")
 async def get_tokens(credentials: Credentials):
         credentials_dict = credentials.dict()
+        log.info(credentials_dict)
         database = DataBase()
         username, password = credentials_dict.values()
         if database.is_user_valid(username, password):
@@ -61,6 +65,7 @@ async def get_tokens(credentials: Credentials):
             }
         else:
             response = get_response_message(cnt.MSG_USER_NOT_FOUND)
+        log.info(response)
         return response
 
 @router.post("/get_access_token", response_model=GetAccessTokenResponse)
@@ -69,11 +74,14 @@ async def get_access_token(token: Token):
             with open(params[cnt.PUBLIC_KEY_PATH], 'rb') as file:
                     public_key = file.read()
         except FileNotFoundError:
+            log.error(Exception(FileNotFoundError))
             raise Exception(FileNotFoundError)
         request_params = token.dict()
+        log.info(request_params)
         username = jwt.decode(request_params[cnt.TOKEN], public_key,
             issuer=params[cnt.ISSUER],
             algorithm='RS256')[cnt.USERNAME]
+        log.info(username)
         access_token_data = _generate_token(TokenType.ACCESS, username)
         response = {
             cnt.MSG_CODE: params[cnt.MSG_CODES][cnt.MSG_ALL_DONE],
@@ -83,4 +91,5 @@ async def get_access_token(token: Token):
                 cnt.EXPIRES_IN: params[cnt.ACCESS_TOKEN_LIFE_SPAN],
             }
         }
+        log.info(response)
         return response
