@@ -11,6 +11,9 @@ params = {
     # token params
     cnt.ACCESS_TOKEN_LIFE_SPAN: 1800,
     cnt.REFRESH_TOKEN_LIFE_SPAN: 2592000,
+    cnt.BITS: 2048,
+    cnt.SC_SERVER_URL: 'http://127.0.0.1:8090',
+    cnt.SC_CREATE_USER_ENDPOINT: '/admin/user',
     cnt.ISSUER: 'sc-auth-server',
     # messages
     cnt.MSG_ACCESS_DENIED: 'Access denied',
@@ -22,6 +25,7 @@ params = {
         cnt.MSG_INVALID_PASSWORD: 2,
         cnt.MSG_USER_NOT_FOUND: 3,
         cnt.MSG_USER_IS_IN_BASE: 4,
+        cnt.MSG_SC_SERVER_ERROR: 5
     },
     # messages text
     cnt.MSG_TEXT: {
@@ -30,5 +34,6 @@ params = {
         cnt.MSG_INVALID_PASSWORD: "User password is incorrect",
         cnt.MSG_USER_NOT_FOUND: "User not found in database",
         cnt.MSG_USER_IS_IN_BASE: "User already exists in database",
+        cnt.MSG_SC_SERVER_ERROR: "An error has occurred on sc-server"
     }
 }

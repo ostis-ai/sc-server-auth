@@ -1,5 +1,5 @@
 from fastapi.routing import APIRouter
-from models import Credentials, Response, Token, TokenType, GetAccessTokenResponse
+from models import Credentials, Token, TokenType, GetAccessTokenResponse
 import constants as cnt
 import jwt
 import time
@@ -32,7 +32,7 @@ def _generate_token(token_type: TokenType, username: str) -> bytes:
 
 def _generate_keys() -> None:
     pkey= crypto.PKey()
-    pkey.generate_key(type=crypto.TYPE_RSA, bits=2048)
+    pkey.generate_key(type=crypto.TYPE_RSA, bits=params[cnt.BITS])
     with open(params[cnt.PRIVATE_KEY_PATH], "wb") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey))
     with open(params[cnt.PUBLIC_KEY_PATH], "wb") as f:

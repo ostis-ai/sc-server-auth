@@ -5,6 +5,7 @@ import constants as cnt
 from common import get_response_message
 from verifiers import username_verifier
 import requests
+from config import params
 
 router = APIRouter(
         prefix="/admin",
@@ -26,7 +27,6 @@ def _verify_user_info_in_database(database: DataBase, name: str, password: str) 
 @router.post("/user", response_model=Response)
 async def create_user(user: UserInCreate):
     user_info = user.dict()
-    print(user_info)
     database = DataBase()
     msg_desc = _verify_user_info_in_database(
             database,
@@ -35,9 +35,12 @@ async def create_user(user: UserInCreate):
             )
     response = get_response_message(msg_desc)
     if msg_desc == cnt.MSG_ALL_DONE:
-        database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
-    sc_response = requests.post(url="http://127.0.0.1:8090/admin/user", json=user_info).json()
-    print(sc_response)
+        sc_response = requests.post(url=params[cnt.SC_SERVER_URL]+params[cnt.SC_CREATE_USER_ENDPOINT], json=user_info).json()
+        print(sc_response)
+        if sc_response[cnt.MSG_CODE] == params[cnt.MSG_CODES][cnt.MSG_ALL_DONE]:
+            database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
+        else:
+            response = get_response_message(cnt.MSG_SC_SERVER_ERROR)
     return response
 
 @router.delete("/user", response_model=Response)
