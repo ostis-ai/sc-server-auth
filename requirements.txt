@@ -1,6 +1,0 @@
-fastapi
-pydantic
-jwt
-pyOpenSSL
-sqlalchemy
-
