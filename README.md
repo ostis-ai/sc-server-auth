@@ -19,7 +19,7 @@ poetry install
 
 To start auth-server run in poetry:
 ```
-python3 -m uvicorn main:app --reload
+./run_server.sh
 ```
 
 Current endpoints:
