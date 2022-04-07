@@ -64,8 +64,8 @@ class UserIn(BaseModel):
 
 class UserInCreate(UserIn):
     password: str
-    role: Optional[str] = None
-    lang: Optional[str] = None
+    template: str
+    args: Optional[dict] = None
 
    
 class Response(BaseModel):
