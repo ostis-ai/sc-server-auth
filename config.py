@@ -16,6 +16,11 @@ params = {
     cnt.SC_CREATE_USER_ENDPOINT: '/admin/user',
     cnt.WS_JSON_URL: 'ws://localhost:8090/ws_json',
     cnt.ISSUER: 'sc-auth-server',
+    cnt.HOST: 'http://127.0.0.1',
+    cnt.PORT: '5000',
+    cnt.GET_TOKENS_ENDPOINT: '/auth/get_tokens',
+    cnt.GET_ACCESS_TOKEN_ENDPOINT: '/auth/get_access_token',
+    cnt.USER_ENDPOINT: '/admin/user',
     # messages
     cnt.MSG_ACCESS_DENIED: 'Access denied',
     cnt.MSG_INVALID_REQUEST: 'Invalid request',
