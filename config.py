@@ -14,6 +14,7 @@ params = {
     cnt.BITS: 2048,
     cnt.SC_SERVER_URL: 'http://127.0.0.1:8090',
     cnt.SC_CREATE_USER_ENDPOINT: '/admin/user',
+    cnt.WS_JSON_URL: 'ws://localhost:8090/ws_json',
     cnt.ISSUER: 'sc-auth-server',
     # messages
     cnt.MSG_ACCESS_DENIED: 'Access denied',

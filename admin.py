@@ -46,10 +46,8 @@ async def create_user(user: UserInCreate):
             )
     response = get_response_message(msg_desc)
     database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
-    if msg_desc == cnt.MSG_ALL_DONE:
-        await generate_user_args(user_info)
-    else:
-        response = get_response_message(cnt.MSG_SC_SERVER_ERROR)
+    generate_user(user_info)
+#    response = get_response_message(cnt.MSG_SC_SERVER_ERROR)
     log.info(response)
     return response
 
@@ -76,8 +74,8 @@ async def get_users(token: Token):
     return users
 
 
-async def generate_user_args(user_info):
-    client.connect(url=cnt.WS_JSON_URL+'?token='+_generate_token(TokenType.ACCESS, 'auth_server').decode())
+def generate_user(user_info: dict):
+    client.connect(url=f'{params[cnt.WS_JSON_URL]}{cnt.TOKEN_QUERY_ARG}{_generate_token(TokenType.ACCESS, cnt.AUTH_SERVER).decode()}')
     const = ScConstruction()
 
     const.create_node(sc_types.NODE_CONST, f'{cnt.MAIN}_{cnt.NODE}')
@@ -102,12 +100,12 @@ async def generate_user_args(user_info):
     }
 
     for role in args:
-        const = generate_arg_struct(const, role, args[role])
+        generate_arg_struct(const, role, args[role])
     client.create_elements(const)
     client.disconnect()
 
 
-def generate_arg_struct(const, role, role_params):
+def generate_arg_struct(const: ScConstruction, role: str, role_params: dict):
     value_content = ScLinkContent(role_params[cnt.VALUE], ScLinkContentType.STRING.value)
     const.create_link(sc_types.LINK, value_content, f'{cnt.VALUE}_{role}')
 
@@ -125,5 +123,3 @@ def generate_arg_struct(const, role, role_params):
     const.create_edge(sc_types.EDGE_D_COMMON_CONST, f'{cnt.ROLE}_{role}', f'{cnt.NODE}_{role}', f'{cnt.ROLE}_{cnt.EDGE}_{role}')
 
     const.create_edge(sc_types.EDGE_ACCESS_CONST_POS_PERM, f'{cnt.ARGS}_{cnt.NODE}', f'{cnt.ROLE}_{cnt.EDGE}_{role}', f'{cnt.ARGS}_{role}_{cnt.EDGE}')
-    return const
-

@@ -9,6 +9,8 @@ BITS = 'bits'
 SC_SERVER_URL = 'sc_server_url'
 SC_CREATE_USER_ENDPOINT = 'sc_create_user_endpoint'
 SC_CREATE_USER_URL = 'sc_create_user_url'
+AUTH_SERVER = 'auth_server'
+WS_JSON_URL = 'ws_json_url'
 # patterns
 USERNAME_PATTERN = 'username_pattern'
 PASSWORD_PATTERN = 'password_pattern'
@@ -37,12 +39,12 @@ REFRESH_TOKEN = 'refresh_token'
 REFRESH_TOKEN_LIFE_SPAN = 'refresh_token_life_span'
 ISSUER = 'issuer'
 USERNAME = 'username'
+TOKEN_QUERY_ARG = '?token='
 # paths
 SQLITE_DB_PATH = 'sqlite_db_path'
 PRIVATE_KEY_PATH = 'private_key'
 PUBLIC_KEY_PATH = 'public_key'
 # for new user generation
-WS_JSON_URL = 'ws://localhost:8090/ws_json' #TODO Add dynamic generation for url
 RREL_1 = 'rrel_1'
 RREL_2 = 'rrel_2'
 TEMPLATE = 'template'
