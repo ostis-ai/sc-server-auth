@@ -64,15 +64,20 @@ def _on_error(ws: websocket.WebSocketApp, error: Exception) -> None:  # pylint: 
     logger.error(f"{error}. Close connection")
 
 
+def _on_close(ws: websocket.WebSocketApp, close_status_code, close_msg):
+    disconnect()
+    logger.info(f"{close_status_code}: {close_msg}")
+
+
 def connect(url: str) -> None:
     def run_in_thread(url_for_ws_app: str):
         ScClient.ws_app = websocket.WebSocketApp(
             url_for_ws_app,
             on_message=_on_message,
             on_error=_on_error,
+            on_close=_on_close,
         )
         ScClient.ws_app.run_forever()
-
     client_thread = threading.Thread(target=run_in_thread, args=(url,), name="sc-json_client-thread")
     client_thread.start()
     logger.debug("Connected")

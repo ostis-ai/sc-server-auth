@@ -16,5 +16,6 @@ app.include_router(admin.router)
 client.connect(BASE_SC_SERVER_URL)
 if client.is_connected():
     log.info("Connection with sc-server established successfully")
+    client.disconnect()
 else:
     log.warning("Connection with sc-server not established. Run auth-server in DB-only mode")
