@@ -60,9 +60,9 @@ class ResponseModel(BaseModel):
 
 
 class GetTokensResponseModel(ResponseModel):
-    access_token: TokenModel
-    refresh_token: TokenModel
+    access_token: TokenModel = None
+    refresh_token: TokenModel = None
 
 
 class GetAccessTokenResponseModel(ResponseModel):
-    access_token: TokenModel
+    access_token: TokenModel = None

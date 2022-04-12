@@ -37,7 +37,7 @@ params = {
     cnt.ISSUER: 'sc-auth-server',
     cnt.PROTOCOL: 'http://',
     cnt.HOST: '127.0.0.1',
-    cnt.PORT: '5000',
+    cnt.PORT: ':5000',
     cnt.GET_TOKENS_ENDPOINT: '/auth/get_tokens',
     cnt.GET_ACCESS_TOKEN_ENDPOINT: '/auth/get_access_token',
     cnt.USER_ENDPOINT: '/admin/user',
@@ -63,3 +63,5 @@ params = {
         cnt.MSG_SC_SERVER_ERROR: "An error has occurred on sc-server"
     }
 }
+
+BASE_AUTH_SERVER_URL = params[cnt.PROTOCOL] + params[cnt.HOST] + params[cnt.PORT]
