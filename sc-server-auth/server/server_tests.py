@@ -1,7 +1,7 @@
 import unittest
 import requests
 from config import params
-import constants as cnt
+from server import constants as cnt
 
 user_creds = {"name": "admin", "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}
 wrong_user_creds = {"name": "stas", "password": "a665a45923422f9d417e5867efdc4fb8a06a1f3fff1fa07e998e86f7f7a27ae3"}

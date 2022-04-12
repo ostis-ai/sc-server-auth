@@ -28,8 +28,14 @@ class LinkContentOversizeError(CommonError):
         super().__init__(CommonErrorMessages.LINK_OVERSIZE, msg)
 
 
+class NoConnectionError(CommonError):
+    def __init__(self, msg: str):
+        super().__init__(CommonErrorMessages.NO_CONNECTION, msg)
+
+
 class CommonErrorMessages(Enum):
     INVALID_STATE = "Invalid state"
     INVALID_VALUE = "Invalid value"
+    NO_CONNECTION = "Connection to sc-server not established"
     MERGE_ERROR = "You can't merge two different syntax type"
     LINK_OVERSIZE = "Link content exceeds permissible value"

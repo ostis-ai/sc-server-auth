@@ -1,4 +1,26 @@
-import constants as cnt
+from enum import Enum
+
+from server import constants as cnt
+
+
+class TokenType(Enum):
+    ACCESS = 0
+    REFRESH = 1
+
+
+sc_server_params = {
+    cnt.PROTOCOL: 'ws://',
+    cnt.HOST: '127.0.0.1',
+    cnt.PORT: ':8090',
+    cnt.WS_JSON_URL: '/ws_json',
+    cnt.TOKEN_QUERY_ARG: '?token=',
+    cnt.SC_CREATE_USER_ENDPOINT: '/admin/user',
+}
+
+BASE_SC_SERVER_URL = sc_server_params[cnt.PROTOCOL] + sc_server_params[cnt.HOST] \
+                    + sc_server_params[cnt.PORT] + sc_server_params[cnt.WS_JSON_URL]
+
+TOKEN_SC_SERVER_URL = BASE_SC_SERVER_URL + sc_server_params[cnt.TOKEN_QUERY_ARG]
 
 
 params = {
@@ -12,11 +34,9 @@ params = {
     cnt.ACCESS_TOKEN_LIFE_SPAN: 1800,
     cnt.REFRESH_TOKEN_LIFE_SPAN: 2592000,
     cnt.BITS: 2048,
-    cnt.SC_SERVER_URL: 'http://127.0.0.1:8090',
-    cnt.SC_CREATE_USER_ENDPOINT: '/admin/user',
-    cnt.WS_JSON_URL: 'ws://localhost:8090/ws_json',
     cnt.ISSUER: 'sc-auth-server',
-    cnt.HOST: 'http://127.0.0.1',
+    cnt.PROTOCOL: 'http://',
+    cnt.HOST: '127.0.0.1',
     cnt.PORT: '5000',
     cnt.GET_TOKENS_ENDPOINT: '/auth/get_tokens',
     cnt.GET_ACCESS_TOKEN_ENDPOINT: '/auth/get_access_token',

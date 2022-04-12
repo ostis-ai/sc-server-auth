@@ -4,7 +4,7 @@ run_server()
 {
   fi=${host:-127.0.0.1}
   fp=${port:-5000}
-  python3 -m uvicorn main:app --reload --host "$fi" --port "$fp" 
+  python3 -m uvicorn main:app --reload --host "$fi" --port "$fp"
 }
 
 help()
@@ -22,7 +22,7 @@ while getopts "i:p:h" option; do
          host=$OPTARG;;
       p)
          port=$OPTARG;;
-      s)
+      h)
          help
          exit;;
       \?) # incorrect option

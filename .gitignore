@@ -13,6 +13,9 @@ sc-machine.json
 manifest.json
 *.user
 *.*~
+*.log
+*.log.*
+*.pem
 
 .vscode
 .idea

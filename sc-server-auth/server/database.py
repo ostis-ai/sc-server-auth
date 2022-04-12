@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
-import constants as cnt
+from server import constants as cnt
 from config import params
 
 Base = declarative_base()

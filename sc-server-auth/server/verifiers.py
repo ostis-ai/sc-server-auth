@@ -1,6 +1,6 @@
 import re
 
-import constants as cnt
+from server import constants as cnt
 from config import params
 
 
