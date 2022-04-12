@@ -17,29 +17,26 @@ poetry shell
 poetry install
 ```
 
-To start auth-server run in poetry:
+Activate the virtual environment is to create a new shell with **_poetry shell_**. 
+To deactivate the virtual environment and **_exit_** this new shell type exit. 
+To deactivate the virtual environment without leaving the shell use **_deactivate_**.
+
+To start auth-server with default settings:
 ```
-./run_server.sh
+cd sc-server-auth
+bash scripts/run_server.sh
 ```
 
-Current endpoints:
+You can specify ip and port for starting server by passing arguments:
+```
+cd sc-server-auth
+bash scripts/run_server.sh -i your_ip -p your_port
+```
 
-127.0.0.1:8000/auth/get_tokens - generate access and refresh token for current user's login and password, params: username, password, role. After check user credentials, service issues access and refresh token for future requests.
-POST request-body: {"name": "admin", "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"}
-127.0.0.1:8000/auth/get_access_token - generate access token, for this operation needs refresh token
-POST request-body: {"token": "..."}
+You can check current endpoints in swagger docs by url:
+```
+http://127.0.0.1:5000/docs
+```
 
-
-127.0.0.1:8000/admin/user - admin endpoint (need specific type of request for correct work), for this operation needs access token:
-Examples:
-POST request-body: {"name": "alex123", "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", ""role": "patient", "lang": "ru", "access_token": "..."}
-127.0.0.1:8000/admin/users - get users list, for this operation needs access token
-GET request-body: {"token": "..."}
-Current credentials to test: login - admin, password - a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3 (SHA256 hash)
-All added endpoints respond with specific message codes:
-cnt.MSG_ALL_DONE: 0,
-cnt.MSG_INVALID_USERNAME: 1,
-cnt.MSG_INVALID_PASSWORD: 2,
-cnt.MSG_USER_NOT_FOUND: 3,
-cnt.MSG_USER_IS_IN_BASE: 4
-
+Current credentials to test: 
+login - admin, password - a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3 (SHA256 hash)
