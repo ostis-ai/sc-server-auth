@@ -1,8 +1,3 @@
-"""
-    Copyright (c) 2022 Intelligent Semantic Systems LLC, All rights reserved.
-    Author Alexandr Zagorskiy
-"""
-
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
