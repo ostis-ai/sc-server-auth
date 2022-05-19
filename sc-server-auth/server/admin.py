@@ -3,7 +3,6 @@ from server import models
 from server.database import DataBase
 from server import constants as cnt
 from server.common import get_response_message
-from server.user_manager import generate_user
 from server.verifiers import username_verifier
 from log import get_file_only_logger
 
@@ -38,7 +37,6 @@ async def create_user(user: models.CreateUserModel):
         password=user_info[cnt.PASSWORD]
     )
     if msg_desc == cnt.MSG_ALL_DONE:
-        generate_user(user_info)
         database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
     response = get_response_message(msg_desc)
     log.debug(f"CreateUser response: " + str(response))
