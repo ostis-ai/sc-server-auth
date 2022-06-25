@@ -18,3 +18,4 @@ class CredentialsVerifier(BaseVerifier):
 
 
 username_verifier = CredentialsVerifier(params[cnt.USERNAME_PATTERN])
+password_verifier = CredentialsVerifier(params[cnt.PASSWORD_PATTERN])

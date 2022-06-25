@@ -3,7 +3,7 @@ from server import models
 from server.database import DataBase
 from server import constants as cnt
 from server.common import get_response_message
-from server.verifiers import username_verifier
+from server.verifiers import username_verifier, password_verifier
 from log import get_file_only_logger
 
 log = get_file_only_logger(__name__)
@@ -17,7 +17,7 @@ router = APIRouter(
 def _verify_user_info_in_database(database: DataBase, name: str, password: str) -> str:
     if not username_verifier.verify(name):
         message_desc = cnt.MSG_INVALID_USERNAME
-    elif len(password.strip()) == 0:
+    elif not password_verifier.verify(password):
         message_desc = cnt.MSG_INVALID_PASSWORD
     elif database.is_such_user_in_base(name):
         message_desc = cnt.MSG_USER_IS_IN_BASE

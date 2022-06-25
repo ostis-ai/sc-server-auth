@@ -30,6 +30,7 @@ params = {
     cnt.PUBLIC_KEY_PATH: 'public.pem',
     # validator patters
     cnt.USERNAME_PATTERN: '^[a-zA-Z][a-zA-Z0-9-_.]{1,20}$',
+    cnt.PASSWORD_PATTERN: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&-_]{6,}$',
     # token params
     cnt.ACCESS_TOKEN_LIFE_SPAN: 1800,
     cnt.REFRESH_TOKEN_LIFE_SPAN: 2592000,
@@ -61,6 +62,7 @@ params = {
         cnt.MSG_USER_NOT_FOUND: "User not found in database",
         cnt.MSG_USER_IS_IN_BASE: "User already exists in database",
         cnt.MSG_SC_SERVER_ERROR: "An error has occurred on sc-server"
+
     }
 }
 
