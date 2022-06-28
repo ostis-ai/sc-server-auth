@@ -42,6 +42,7 @@ params = {
     cnt.GET_TOKENS_ENDPOINT: '/auth/get_tokens',
     cnt.GET_ACCESS_TOKEN_ENDPOINT: '/auth/get_access_token',
     cnt.USER_ENDPOINT: '/admin/user',
+    cnt.USERS_ENDPOINT: '/admin/users',
     # messages
     cnt.MSG_ACCESS_DENIED: 'Access denied',
     cnt.MSG_INVALID_REQUEST: 'Invalid request',
