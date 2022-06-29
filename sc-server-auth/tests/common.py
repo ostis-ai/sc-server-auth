@@ -5,6 +5,10 @@ from server import constants as cnt
 import unittest
 
 test_client = TestClient(app)
+get_tokens_url = BASE_AUTH_SERVER_URL + params[cnt.GET_TOKENS_ENDPOINT]
+get_access_token_url = BASE_AUTH_SERVER_URL + params[cnt.GET_ACCESS_TOKEN_ENDPOINT]
+user_url = BASE_AUTH_SERVER_URL + params[cnt.USER_ENDPOINT]
+users_url = BASE_AUTH_SERVER_URL + params[cnt.USERS_ENDPOINT]
 
 
 def create_user_request(token="wrong_token",
@@ -30,14 +34,5 @@ def get_token(token="wrong_token"):
     return {"token": token}
 
 
-get_tokens_url = BASE_AUTH_SERVER_URL + params[cnt.GET_TOKENS_ENDPOINT]
-get_access_token_url = BASE_AUTH_SERVER_URL + params[cnt.GET_ACCESS_TOKEN_ENDPOINT]
-user_url = BASE_AUTH_SERVER_URL + params[cnt.USER_ENDPOINT]
-users_url = BASE_AUTH_SERVER_URL + params[cnt.USERS_ENDPOINT]
-
-
 class BaseServerTestCase(unittest.TestCase):
     pass
-
-
-
