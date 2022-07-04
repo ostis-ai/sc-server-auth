@@ -1,0 +1,57 @@
+name: push-CI
+
+on:
+  push:
+    branches:
+      - '**'        # matches every branch
+
+jobs:
+  lint-n-test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install poetry
+      uses: snok/install-poetry@v1.0.0
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      run: poetry install
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+
+    - name: Checking with isort
+      run: |
+        poetry run isort -c .
+
+    - name: Checking with black
+      run: |
+        poetry run black --diff --color --line-length 120 .
+
+    - name: Linting with pylint
+      run: |
+        poetry run pylint .
+
+    - name: Unittest with coverage
+      run: |
+        poetry run coverage run --source=das -m unittest discover -s .
+        poetry run coverage report --fail-under=$COVERAGE_LIMIT -m
