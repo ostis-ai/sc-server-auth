@@ -23,3 +23,5 @@ __pycache__
 .DS_store
 .antlr
 .cache
+
+sc-server-auth/.coverage
