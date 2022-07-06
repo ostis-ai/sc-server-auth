@@ -41,15 +41,15 @@ jobs:
 
     - name: Checking with isort
       run: |
-        poetry run isort -c .
+        poetry run isort -c sc-server-auth
 
     - name: Checking with black
       run: |
-        poetry run black --diff --color --line-length 120 .
+        poetry run black --diff --color --line-length 120 sc-server-auth
 
     - name: Linting with pylint
       run: |
-        poetry run pylint .
+        poetry run pylint sc-server-auth
 
     - name: Unittest with coverage
       run: |
