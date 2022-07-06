@@ -21,9 +21,16 @@ Activate the virtual environment is to create a new shell with **_poetry shell_*
 To deactivate the virtual environment and **_exit_** this new shell type exit. 
 To deactivate the virtual environment without leaving the shell use **_deactivate_**.
 
-To start auth-server with default settings:
+Run in poetry environment for testing:
 ```
 cd sc-server-auth
+python -m unittest discover -p "*_tests.py" -v
+
+```
+
+To start auth-server with default settings:
+```
+cd sc-server-auth   
 bash scripts/run_server.sh
 ```
 
