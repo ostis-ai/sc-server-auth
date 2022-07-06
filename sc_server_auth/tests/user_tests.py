@@ -1,6 +1,6 @@
-from tests.common import BaseServerTestCase
-from server import constants as cnt
-from config import params
+from sc_server_auth.config import params
+from sc_server_auth.server import constants as cnt
+from sc_server_auth.tests.common import BaseServerTestCase
 
 
 class TestUsers(BaseServerTestCase):

@@ -24,4 +24,4 @@ __pycache__
 .antlr
 .cache
 
-sc-server-auth/.coverage
+.coverage

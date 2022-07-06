@@ -1,10 +1,11 @@
 from fastapi.routing import APIRouter
-from server import models
-from server.database import DataBase
-from server import constants as cnt
-from server.common import get_response_message
-from server.verifiers import username_verifier, password_verifier
-from log import get_file_only_logger
+
+from sc_server_auth.log import get_file_only_logger
+from sc_server_auth.server import constants as cnt
+from sc_server_auth.server import models
+from sc_server_auth.server.common import get_response_message
+from sc_server_auth.server.database import DataBase
+from sc_server_auth.server.verifiers import password_verifier, username_verifier
 
 log = get_file_only_logger(__name__)
 
@@ -31,11 +32,7 @@ async def create_user(user: models.CreateUserModel):
     user_info = user.dict()
     log.debug(f"CreateUser request: " + str(user_info))
     database = DataBase()
-    msg_desc = _verify_user_info_in_database(
-        database,
-        name=user_info[cnt.NAME],
-        password=user_info[cnt.PASSWORD]
-    )
+    msg_desc = _verify_user_info_in_database(database, name=user_info[cnt.NAME], password=user_info[cnt.PASSWORD])
     if msg_desc == cnt.MSG_ALL_DONE:
         database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
     response = get_response_message(msg_desc)

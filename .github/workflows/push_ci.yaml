@@ -41,17 +41,19 @@ jobs:
 
     - name: Checking with isort
       run: |
-        poetry run isort -c sc-server-auth
+        poetry run isort -c sc_server_auth
 
     - name: Checking with black
       run: |
-        poetry run black --diff --color --line-length 120 sc-server-auth
+        poetry run black --diff --color --line-length 120 sc_server_auth
 
     - name: Linting with pylint
       run: |
-        poetry run pylint sc-server-auth
+        poetry run pylint sc_server_auth
 
     - name: Unittest with coverage
+      env:
+        COVERAGE_LIMIT: 50
       run: |
-        poetry run coverage run --source=das -m unittest discover -s .
+        poetry run coverage run -m unittest discover -p "*_tests.py" -v
         poetry run coverage report --fail-under=$COVERAGE_LIMIT -m

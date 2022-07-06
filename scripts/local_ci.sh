@@ -2,7 +2,7 @@
 
 unittest() {
   echo "--------------------------------------UNITTEST--------------------------------------"
-  TEST_FLAG=true poetry run coverage run --source=. -m unittest discover -s .
+  TEST_FLAG=true poetry run coverage run -m unittest discover -p "*_tests.py" -v
   echo "------------------------------------------------------------------------------------"
 }
 
@@ -15,7 +15,7 @@ coverage() {
 
 isort() {
   echo "--------------------------------------ISORT--------------------------------------"
-  poetry run isort . --check --diff --line-length 120
+  poetry run isort sc_server_auth --check --diff --line-length 120
   echo "---------------------------------------------------------------------------------"
 
 }
@@ -28,7 +28,7 @@ black() {
 
 pylint() {
   echo "--------------------------------------PYLINT--------------------------------------"
-  poetry run pylint sc-server-auth
+  poetry run pylint sc_server_auth
   echo "----------------------------------------------------------------------------------"
 }
 
