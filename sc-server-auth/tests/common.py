@@ -13,11 +13,12 @@ class BaseServerTestCase(unittest.TestCase):
     test_client = TestClient(app)
 
     @staticmethod
-    def create_user_request(token="wrong_token",
-                            name="Ivan",
-                            password="Ivan_007",
-                            template="str",
-                            args={}):
+    def create_user_request(
+            token="wrong_token",
+            name="Ivan",
+            password="Ivan_007",
+            template="str",
+            args={}):
         return {cnt.ACCESS_TOKEN: token, cnt.NAME: name, cnt.PASSWORD: password, cnt.TEMPLATE: template, cnt.ARGS: args}
 
     @staticmethod
