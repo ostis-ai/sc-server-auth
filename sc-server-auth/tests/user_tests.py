@@ -1,52 +1,64 @@
-from tests.common import *
+from tests.common import BaseServerTestCase
+from server import constants as cnt
 
 
 class TestUsers(BaseServerTestCase):
     def setUp(self) -> None:
-        response = test_client.post(url=get_tokens_url, json=get_tokens()).json()
+        response = self.test_client.post(url=self.tokens_url, json=self.get_tokens_request()).json()
         self.access_token = response[cnt.ACCESS_TOKEN][cnt.TOKEN]
 
-    def test_create_user_with_wrong_token(self):
-        user = create_user_request()
-        response = test_client.post(url=user_url, json=user).json()
-        self.assertEqual(response["detail"], "Access denied")
-
-    def test_create_and_delete_user(self):
-        user = create_user_request(token=self.access_token)
-        new_user_response = test_client.post(url=user_url, json=user).json()
-        exist_user_response = test_client.post(url=user_url, json=user).json()
-
-        user_to_remove = delete_user_request(token=self.access_token)
-        delete_user_response = test_client.delete(url=user_url, json=user_to_remove).json()
-
-        self.assertEqual(int(new_user_response[cnt.MSG_CODE]), 0)
-        self.assertEqual(int(exist_user_response[cnt.MSG_CODE]), 4)
+    def test_delete_user(self):
+        user_to_remove = self.delete_user_request(token=self.access_token)
+        delete_user_response = self.test_client.delete(url=self.user_url, json=user_to_remove).json()
         self.assertEqual(int(delete_user_response[cnt.MSG_CODE]), 0)
 
-    def test_create_user_with_wrong_password(self):
-        user = create_user_request(token=self.access_token, password="ivan_006")
-        response = test_client.post(url=user_url, json=user).json()
-        self.assertEqual(int(response[cnt.MSG_CODE]), 2)
-
-    def test_create_user_with_wrong_name(self):
-        user = create_user_request(token=self.access_token, name="Ivan$")
-        response = test_client.post(url=user_url, json=user).json()
-        self.assertEqual(int(response[cnt.MSG_CODE]), 1)
+    def test_delete_user_empty(self):
+        delete_user_response = self.test_client.delete(url=self.user_url).status_code
+        self.assertEqual(delete_user_response, 422)
 
     def test_delete_user_with_wrong_token(self):
-        user_to_remove = delete_user_request()
-        delete_user_response = test_client.delete(url=user_url, json=user_to_remove).json()
+        delete_user_response = self.test_client.delete(url=self.user_url, json=self.delete_user_request()).json()
         self.assertEqual(delete_user_response["detail"], "Access denied")
 
     def test_delete_user_with_wrong_name(self):
-        user_to_remove = delete_user_request(token=self.access_token, name="Unknown_user")
-        delete_user_response = test_client.delete(url=user_url, json=user_to_remove).json()
+        user_to_remove = self.delete_user_request(token=self.access_token, name="Unknown_user")
+        delete_user_response = self.test_client.delete(url=self.user_url, json=user_to_remove).json()
         self.assertEqual(int(delete_user_response[cnt.MSG_CODE]), 3)
 
+    def test_create_user(self):
+        user = self.create_user_request(token=self.access_token)
+        new_user_response = self.test_client.post(url=self.user_url, json=user).json()
+        exist_user_response = self.test_client.post(url=self.user_url, json=user).json()
+
+        self.assertEqual(int(new_user_response[cnt.MSG_CODE]), 0)
+        self.assertEqual(int(exist_user_response[cnt.MSG_CODE]), 4)
+
+    def test_create_user_empty(self):
+        new_user_response = self.test_client.post(url=self.user_url).status_code
+        self.assertEqual(new_user_response, 422)
+
+    def test_create_user_with_wrong_token(self):
+        response = self.test_client.post(url=self.user_url, json=self.create_user_request()).json()
+        self.assertEqual(response["detail"], "Access denied")
+
+    def test_create_user_with_wrong_password(self):
+        user = self.create_user_request(token=self.access_token, password="ivan_006")
+        response = self.test_client.post(url=self.user_url, json=user).json()
+        self.assertEqual(int(response[cnt.MSG_CODE]), 2)
+
+    def test_create_user_with_wrong_name(self):
+        user = self.create_user_request(token=self.access_token, name="Ivan$")
+        response = self.test_client.post(url=self.user_url, json=user).json()
+        self.assertEqual(int(response[cnt.MSG_CODE]), 1)
+
     def test_get_users(self):
-        response = test_client.get(url=users_url, json=get_token(self.access_token)).json()
+        response = self.test_client.get(url=self.users_url, json=self.get_token_request(self.access_token)).json()
         self.assertEqual(type(response), list)
 
+    def test_get_users_empty(self):
+        response = self.test_client.get(url=self.users_url).status_code
+        self.assertEqual(response, 422)
+
     def test_get_users_wrong_token(self):
-        response = test_client.get(url=users_url, json=get_token()).json()
+        response = self.test_client.get(url=self.users_url, json=self.get_token_request()).json()
         self.assertEqual(response["detail"], "Access denied")
