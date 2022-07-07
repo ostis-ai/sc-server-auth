@@ -17,7 +17,7 @@ PORT = 'port'
 GET_TOKENS_ENDPOINT = 'get_tokens_endpoint'
 GET_ACCESS_TOKEN_ENDPOINT = 'get_access_toke_endpoint'
 USER_ENDPOINT = 'user_endpoint'
-
+USERS_ENDPOINT = 'users_endpoint'
 # patterns
 USERNAME_PATTERN = 'username_pattern'
 PASSWORD_PATTERN = 'password_pattern'
