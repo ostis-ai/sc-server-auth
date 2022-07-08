@@ -1,11 +1,11 @@
-from config import params
 from sqlalchemy import Column, Integer, String, create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from server import constants as cnt
+from sc_server_auth.config import params
+from sc_server_auth.server import constants as cnt
 
 Base = declarative_base()
 

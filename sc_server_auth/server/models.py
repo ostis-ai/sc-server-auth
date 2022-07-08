@@ -1,12 +1,12 @@
 from typing import Optional
 
 import jwt
-from config import params
 from fastapi import HTTPException
 from pydantic import BaseModel
 from pydantic.class_validators import validator
 
-from server import constants as cnt
+from sc_server_auth.config import params
+from sc_server_auth.server import constants as cnt
 
 
 def _validate_token(value):

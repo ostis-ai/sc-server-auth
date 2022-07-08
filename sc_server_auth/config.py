@@ -1,6 +1,6 @@
 from enum import Enum
 
-from server import constants as cnt
+from sc_server_auth.server import constants as cnt
 
 
 class TokenType(Enum):

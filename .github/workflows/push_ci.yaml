@@ -55,5 +55,5 @@ jobs:
       env:
         COVERAGE_LIMIT: 50
       run: |
-        poetry run coverage run -m unittest discover -p "*_tests.py" -v
+        poetry run coverage run -m unittest discover -p "*_tests.py" -v -s sc_server_auth
         poetry run coverage report --fail-under=$COVERAGE_LIMIT -m

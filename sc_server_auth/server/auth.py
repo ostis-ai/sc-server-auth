@@ -3,14 +3,14 @@ from os.path import isfile
 
 import jwt
 import OpenSSL.crypto as crypto
-from config import TokenType, params
 from fastapi.routing import APIRouter
-from log import get_file_only_logger
 
-from server import constants as cnt
-from server import models
-from server.common import get_response_message
-from server.database import DataBase
+from sc_server_auth.config import TokenType, params
+from sc_server_auth.log import get_file_only_logger
+from sc_server_auth.server import constants as cnt
+from sc_server_auth.server import models
+from sc_server_auth.server.common import get_response_message
+from sc_server_auth.server.database import DataBase
 
 log = get_file_only_logger(__name__)
 
