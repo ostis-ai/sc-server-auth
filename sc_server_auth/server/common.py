@@ -1,5 +1,6 @@
-from sc_server_auth.config import params
-from sc_server_auth.server import constants as cnt
+from config import params
+
+from server import constants as cnt
 
 
 def get_response_message(message_desc: str) -> dict:

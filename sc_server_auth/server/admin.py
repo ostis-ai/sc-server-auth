@@ -1,11 +1,11 @@
 from fastapi.routing import APIRouter
+from log import get_file_only_logger
 
-from sc_server_auth.log import get_file_only_logger
-from sc_server_auth.server import constants as cnt
-from sc_server_auth.server import models
-from sc_server_auth.server.common import get_response_message
-from sc_server_auth.server.database import DataBase
-from sc_server_auth.server.verifiers import password_verifier, username_verifier
+from server import constants as cnt
+from server import models
+from server.common import get_response_message
+from server.database import DataBase
+from server.verifiers import password_verifier, username_verifier
 
 log = get_file_only_logger(__name__)
 

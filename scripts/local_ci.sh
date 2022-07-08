@@ -2,7 +2,7 @@
 
 unittest() {
   echo "--------------------------------------UNITTEST--------------------------------------"
-  TEST_FLAG=true poetry run coverage run -m unittest discover -p "*_tests.py" -v
+  TEST_FLAG=true poetry run coverage run -m unittest discover -p "*_tests.py" -v -s sc_server_auth
   echo "------------------------------------------------------------------------------------"
 }
 
