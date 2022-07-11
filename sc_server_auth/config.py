@@ -58,6 +58,7 @@ params = {
         cnt.MSG_USER_NOT_FOUND: 3,
         cnt.MSG_USER_IS_IN_BASE: 4,
         cnt.MSG_SC_SERVER_ERROR: 5,
+        cnt.MSG_TOKEN_ERROR: 6,
     },
     # messages text
     cnt.MSG_TEXT: {
@@ -67,6 +68,7 @@ params = {
         cnt.MSG_USER_NOT_FOUND: "User not found in database",
         cnt.MSG_USER_IS_IN_BASE: "User already exists in database",
         cnt.MSG_SC_SERVER_ERROR: "An error has occurred on sc-server",
+        cnt.MSG_TOKEN_ERROR: "Token expired",
     },
 }
 
