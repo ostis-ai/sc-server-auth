@@ -8,6 +8,27 @@ class TokenType(Enum):
     REFRESH = 1
 
 
+class Database(Enum):
+    SQLITE = "sqlite"
+    POSTGRES = "postgres"
+
+
+class IsolationLevel(Enum):
+    READ_UNCOMMITTED = "READ UNCOMMITTED"
+    READ_COMMITTED = "READ COMMITTED"
+    REPEATABLE_READ = "REPEATABLE READ"
+    SERIALIZABLE = "SERIALIZABLE"
+
+
+db_params = {
+    cnt.DATABASE: Database.SQLITE,
+    cnt.USER: "sc_auth",
+    cnt.PASSWORD: "sc_auth",
+    cnt.NAME: "sc_auth",
+    cnt.HOST: "localhost",
+    cnt.ISOLATION_LEVEL: IsolationLevel.READ_COMMITTED,
+}
+
 sc_server_params = {
     cnt.PROTOCOL: "ws://",
     cnt.HOST: "127.0.0.1",
@@ -29,7 +50,6 @@ TOKEN_SC_SERVER_URL = BASE_SC_SERVER_URL + sc_server_params[cnt.TOKEN_QUERY_ARG]
 
 params = {
     # path params
-    cnt.SQLITE_DB_PATH: "sqlite:///" + "database.db",
     cnt.PRIVATE_KEY_PATH: "private.pem",
     cnt.PUBLIC_KEY_PATH: "public.pem",
     # validator patters

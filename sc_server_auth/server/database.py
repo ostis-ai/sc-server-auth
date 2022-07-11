@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from sc_server_auth.config import params
+from sc_server_auth.config import Database, db_params
 from sc_server_auth.server import constants as cnt
 
 Base = declarative_base()
@@ -31,9 +31,18 @@ class User(Base):
         return {cnt.ID: self.id, cnt.NAME: self.name}
 
 
+db_engines = {
+    Database.SQLITE: lambda: create_engine("sqlite:///database.db"),
+    Database.POSTGRES: lambda: create_engine(
+        f"postgresql://{db_params[cnt.USER]}:{db_params[cnt.PASSWORD]}@{db_params[cnt.HOST]}/{db_params[cnt.NAME]}",
+        execution_options={"isolation_level": db_params[cnt.ISOLATION_LEVEL]},
+    ),
+}
+
+
 class DataBase:
     def __init__(self) -> None:
-        self.engine = create_engine(params[cnt.SQLITE_DB_PATH])
+        self.engine = db_engines[db_params[cnt.DATABASE]]()
         self.session = None
 
     def init(self) -> None:

@@ -21,6 +21,28 @@ Activate the virtual environment is to create a new shell with **_poetry shell_*
 To deactivate the virtual environment and **_exit_** this new shell type exit. 
 To deactivate the virtual environment without leaving the shell use **_deactivate_**.
 
+## PostgreSQL (optional)
+
+```shell
+sudo apt install postgresql postgresql-contrib
+```
+
+Commands to create database and user for it.
+
+```shell
+sudo -u postgres psql
+```
+
+```postgresql
+create database sc_auth;
+create user sc_auth with encrypted password 'sc_auth';
+grant all privileges on database sc_auth to sc_auth;
+```
+
+**Activation**
+
+Change in sc_server_auth/config.py 24:28  <!--- temporally -->
+
 ## Local-CI tool
 
 For check your branch before pushing just run next command:
