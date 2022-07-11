@@ -1,13 +1,11 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
-
-from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
-from server import constants as cnt
-from config import params
+from sc_server_auth.config import params
+from sc_server_auth.server import constants as cnt
 
 Base = declarative_base()
 
@@ -26,14 +24,11 @@ class User(Base):
     password = Column(String(255), nullable=False)
 
     def __repr__(self):
-        return '<id={}, name={}>'.format(self.id, self.name)
+        return "<id={}, name={}>".format(self.id, self.name)
 
     @property
     def serialize(self):
-        return {
-            cnt.ID: self.id,
-            cnt.NAME: self.name
-        }
+        return {cnt.ID: self.id, cnt.NAME: self.name}
 
 
 class DataBase:
@@ -78,7 +73,8 @@ class DataBase:
         return delete_users_count
 
     def update_user_by_name(self, name: str, new_name: str, password: str) -> bool:
-        updated_users_count = self._session().query(User).filter(User.name == name).\
-            update({cnt.NAME: new_name, cnt.PASSWORD: password})
+        updated_users_count = (
+            self._session().query(User).filter(User.name == name).update({cnt.NAME: new_name, cnt.PASSWORD: password})
+        )
         self._session().commit()
         return updated_users_count

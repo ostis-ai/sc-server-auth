@@ -1,0 +1,21 @@
+[MASTER]
+
+# Use multiple processes to speed up Pylint.
+jobs=2
+
+[MESSAGES CONTROL]
+
+disable=
+        invalid-name,
+        import-error,
+        missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        dangerous-default-value,
+        wrong-import-order
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=120
+

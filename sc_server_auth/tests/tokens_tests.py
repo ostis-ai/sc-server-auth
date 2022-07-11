@@ -1,6 +1,6 @@
-from tests.common import BaseServerTestCase
-from config import params
-from server import constants as cnt
+from sc_server_auth.config import params
+from sc_server_auth.server import constants as cnt
+from sc_server_auth.tests.common import BaseServerTestCase
 
 
 class ServerTest(BaseServerTestCase):
@@ -20,9 +20,9 @@ class ServerTest(BaseServerTestCase):
         self.assertEqual(response, 422)
 
     def test_get_access_token(self):
-        refresh_token = self.test_client.post(
-            url=self.tokens_url, json=self.get_tokens_request()
-        ).json()[cnt.REFRESH_TOKEN][cnt.TOKEN]
+        refresh_token = self.test_client.post(url=self.tokens_url, json=self.get_tokens_request()).json()[
+            cnt.REFRESH_TOKEN
+        ][cnt.TOKEN]
 
         response = self.test_client.post(
             url=self.access_token_url, json=self.get_token_request(token=refresh_token)

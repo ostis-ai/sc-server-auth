@@ -21,22 +21,27 @@ Activate the virtual environment is to create a new shell with **_poetry shell_*
 To deactivate the virtual environment and **_exit_** this new shell type exit. 
 To deactivate the virtual environment without leaving the shell use **_deactivate_**.
 
-Run in poetry environment for testing:
-```
-cd sc-server-auth
-python -m unittest discover -p "*_tests.py" -v
+## Local-CI tool
 
+For check your branch before pushing just run next command:
+```sh
+scripts/local_ci.sh -a
+```
+With option -a local_ci runs all checks, which included black, isort, pylint and unittest. 
+
+If you want to run only certain checks, see help for this command:
+
+```sh
+scripts/local_ci.sh -h
 ```
 
 To start auth-server with default settings:
 ```
-cd sc-server-auth   
 bash scripts/run_server.sh
 ```
 
 You can specify ip and port for starting server by passing arguments:
 ```
-cd sc-server-auth
 bash scripts/run_server.sh -i your_ip -p your_port
 ```
 
