@@ -57,13 +57,9 @@ async def get_tokens(credentials: models.CredentialsModel):
             {
                 cnt.ACCESS_TOKEN: {
                     cnt.TOKEN: access_token_data.decode(),
-                    cnt.TOKEN_TYPE: cnt.JWT,
-                    cnt.EXPIRES_IN: params[cnt.ACCESS_TOKEN_LIFE_SPAN],
                 },
                 cnt.REFRESH_TOKEN: {
                     cnt.TOKEN: refresh_token_data.decode(),
-                    cnt.TOKEN_TYPE: cnt.JWT,
-                    cnt.EXPIRES_IN: params[cnt.REFRESH_TOKEN_LIFE_SPAN],
                 },
             }
         )
@@ -102,8 +98,6 @@ async def get_access_token(token: models.TokenModel):
             {
                 cnt.ACCESS_TOKEN: {
                     cnt.TOKEN: access_token_data.decode(),
-                    cnt.TOKEN_TYPE: cnt.JWT,
-                    cnt.EXPIRES_IN: params[cnt.ACCESS_TOKEN_LIFE_SPAN],
                 }
             }
         )
