@@ -37,7 +37,7 @@ params = {
     cnt.PASSWORD_PATTERN: r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&-_]{6,}$",
     # token params
     cnt.ACCESS_TOKEN_LIFE_SPAN: 1800,
-    cnt.REFRESH_TOKEN_LIFE_SPAN: 2592000,
+    cnt.REFRESH_TOKEN_LIFE_SPAN: 2_593_800,
     cnt.BITS: 2048,
     cnt.ISSUER: "sc-auth-server",
     cnt.PROTOCOL: "http://",
