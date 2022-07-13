@@ -8,11 +8,19 @@ from sc_server_auth.server import constants as cnt
 Base = declarative_base()
 
 
+# class Role(Base):
+#     __tablename__ = cnt.ROLE
+#     id = Column(Integer, primary_key=True, unique=True)
+#     name = Column(String(255), nullable=False)
+#     users = relationship(cnt.USER)
+
+
 class User(Base):
     __tablename__ = cnt.USER
     id = Column(Integer, primary_key=True, unique=True)
     name = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
+    # role_id = Column(Integer, ForeignKey(f"{cnt.ROLE}.id"))
 
     def __repr__(self):
         return "<id={}, name={}>".format(self.id, self.name)
