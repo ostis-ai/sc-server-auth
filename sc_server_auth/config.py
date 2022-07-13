@@ -1,5 +1,7 @@
 from enum import Enum
 
+from sqlalchemy import create_engine
+
 from sc_server_auth.server import constants as cnt
 
 
@@ -21,12 +23,20 @@ class IsolationLevel(Enum):
 
 
 db_params = {
-    cnt.DATABASE: Database.SQLITE,
+    cnt.DATABASE: Database.SQLITE,  # Change database here
     cnt.USER: "sc_auth",
     cnt.PASSWORD: "sc_auth",
     cnt.NAME: "sc_auth",
     cnt.HOST: "localhost",
-    cnt.ISOLATION_LEVEL: IsolationLevel.READ_COMMITTED,
+    cnt.ISOLATION_LEVEL: IsolationLevel.READ_UNCOMMITTED.value,
+}
+
+db_engines = {
+    Database.SQLITE: lambda: create_engine("sqlite:///database.db"),
+    Database.POSTGRES: lambda: create_engine(
+        f"postgresql://{db_params[cnt.USER]}:{db_params[cnt.PASSWORD]}@{db_params[cnt.HOST]}/{db_params[cnt.NAME]}",
+        execution_options={"isolation_level": db_params[cnt.ISOLATION_LEVEL]},
+    ),
 }
 
 sc_server_params = {
