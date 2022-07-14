@@ -57,13 +57,9 @@ async def get_tokens(credentials: models.CredentialsModel):
             {
                 cnt.ACCESS_TOKEN: {
                     cnt.TOKEN: access_token_data.decode(),
-                    cnt.TOKEN_TYPE: cnt.JWT,
-                    cnt.EXPIRES_IN: params[cnt.ACCESS_TOKEN_LIFE_SPAN],
                 },
                 cnt.REFRESH_TOKEN: {
                     cnt.TOKEN: refresh_token_data.decode(),
-                    cnt.TOKEN_TYPE: cnt.JWT,
-                    cnt.EXPIRES_IN: params[cnt.REFRESH_TOKEN_LIFE_SPAN],
                 },
             }
         )
@@ -86,17 +82,24 @@ async def get_access_token(token: models.TokenModel):
     username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
         cnt.USERNAME
     ]
-    log.debug(f"Username: " + username)
-    access_token_data = _generate_token(TokenType.ACCESS, username)
-    response = get_response_message(cnt.MSG_ALL_DONE)
-    response.update(
-        {
-            cnt.ACCESS_TOKEN: {
-                cnt.TOKEN: access_token_data.decode(),
-                cnt.TOKEN_TYPE: cnt.JWT,
-                cnt.EXPIRES_IN: params[cnt.ACCESS_TOKEN_LIFE_SPAN],
+
+    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
+        cnt.EXP
+    ]
+
+    log.debug(f"Username: " + str(username))
+
+    if ttl - time.time() < params[cnt.ACCESS_TOKEN_LIFE_SPAN]:
+        response = get_response_message(cnt.MSG_TOKEN_ERROR)
+    else:
+        access_token_data = _generate_token(TokenType.ACCESS, username)
+        response = get_response_message(cnt.MSG_ALL_DONE)
+        response.update(
+            {
+                cnt.ACCESS_TOKEN: {
+                    cnt.TOKEN: access_token_data.decode(),
+                }
             }
-        }
-    )
+        )
     log.debug(f"GetAccessToken response: " + str(response))
     return response

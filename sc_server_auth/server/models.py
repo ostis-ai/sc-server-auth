@@ -27,8 +27,6 @@ def _validate_token(value):
 
 class TokenModel(BaseModel):
     token: str
-    token_type: Optional[str] = None
-    expires_in: Optional[str] = None
 
     @validator("token")
     def validate_token(cls, value):
