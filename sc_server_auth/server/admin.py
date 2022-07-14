@@ -1,7 +1,7 @@
 from fastapi.routing import APIRouter
 
+import sc_server_auth.configs.constants as cnt
 from sc_server_auth.log import get_file_only_logger
-from sc_server_auth.server import constants as cnt
 from sc_server_auth.server import models
 from sc_server_auth.server.common import get_response_message
 from sc_server_auth.server.database import DataBase

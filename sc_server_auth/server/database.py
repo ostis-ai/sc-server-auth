@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from sc_server_auth.config import db_engines, db_params
-from sc_server_auth.server import constants as cnt
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.params import db_engines, db_params
 
 Base = declarative_base()
 

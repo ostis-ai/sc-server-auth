@@ -1,13 +1,14 @@
 import time
-from os.path import isfile
 
 import jwt
 import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 
-from sc_server_auth.config import TokenType, params
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.models import TokenType
+from sc_server_auth.configs.params import params
+from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.log import get_file_only_logger
-from sc_server_auth.server import constants as cnt
 from sc_server_auth.server import models
 from sc_server_auth.server.common import get_response_message
 from sc_server_auth.server.database import DataBase
@@ -21,9 +22,9 @@ router = APIRouter(
 
 
 def _generate_token(token_type: TokenType, username: str) -> bytes:
-    if not isfile(params[cnt.PRIVATE_KEY_PATH]):
+    if not PRIVATE_KEY_PATH.exists():
         _generate_keys()
-    with open(params[cnt.PRIVATE_KEY_PATH], "rb") as file:
+    with open(PRIVATE_KEY_PATH, "rb") as file:
         private_key = file.read()
     access_token_life_span = params[cnt.ACCESS_TOKEN_LIFE_SPAN]
     refresh_token_life_span = params[cnt.REFRESH_TOKEN_LIFE_SPAN]
@@ -36,9 +37,9 @@ def _generate_token(token_type: TokenType, username: str) -> bytes:
 def _generate_keys() -> None:
     pkey = crypto.PKey()
     pkey.generate_key(type=crypto.TYPE_RSA, bits=params[cnt.BITS])
-    with open(params[cnt.PRIVATE_KEY_PATH], "wb") as f:
+    with open(PRIVATE_KEY_PATH, "wb") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey))
-    with open(params[cnt.PUBLIC_KEY_PATH], "wb") as f:
+    with open(PUBLIC_KEY_PATH, "wb") as f:
         f.write(crypto.dump_publickey(crypto.FILETYPE_PEM, pkey))
 
 
@@ -72,7 +73,7 @@ async def get_tokens(credentials: models.CredentialsModel):
 @router.post("/get_access_token", response_model=models.GetAccessTokenResponseModel)
 async def get_access_token(token: models.TokenModel):
     try:
-        with open(params[cnt.PUBLIC_KEY_PATH], "rb") as file:
+        with open(PUBLIC_KEY_PATH, "rb") as file:
             public_key = file.read()
     except FileNotFoundError:
         log.error(Exception(FileNotFoundError))

@@ -1,26 +1,7 @@
-from enum import Enum
-
 from sqlalchemy import create_engine
 
-from sc_server_auth.server import constants as cnt
-
-
-class TokenType(Enum):
-    ACCESS = 0
-    REFRESH = 1
-
-
-class Database(Enum):
-    SQLITE = "sqlite"
-    POSTGRES = "postgres"
-
-
-class IsolationLevel(Enum):
-    READ_UNCOMMITTED = "READ UNCOMMITTED"
-    READ_COMMITTED = "READ COMMITTED"
-    REPEATABLE_READ = "REPEATABLE READ"
-    SERIALIZABLE = "SERIALIZABLE"
-
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.models import Database, IsolationLevel
 
 db_params = {
     cnt.DATABASE: Database.SQLITE,  # Change database here
@@ -59,9 +40,6 @@ TOKEN_SC_SERVER_URL = BASE_SC_SERVER_URL + sc_server_params[cnt.TOKEN_QUERY_ARG]
 
 
 params = {
-    # path params
-    cnt.PRIVATE_KEY_PATH: "private.pem",
-    cnt.PUBLIC_KEY_PATH: "public.pem",
     # validator patters
     cnt.USERNAME_PATTERN: r"^[a-zA-Z][a-zA-Z0-9-_.]{1,20}$",
     cnt.PASSWORD_PATTERN: r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&-_]{6,}$",

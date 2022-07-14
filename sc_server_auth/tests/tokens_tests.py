@@ -1,5 +1,6 @@
-from sc_server_auth.config import params
-from sc_server_auth.server import constants as cnt
+import configs.constants as cnt
+
+from sc_server_auth.configs.params import params
 from sc_server_auth.tests.common import BaseServerTestCase
 
 
