@@ -1,8 +1,8 @@
 import unittest
 
-from configs import constants as cnt
 from fastapi.testclient import TestClient
 
+from sc_server_auth.configs import constants as cnt
 from sc_server_auth.configs.params import BASE_AUTH_SERVER_URL, params
 from sc_server_auth.main import app
 

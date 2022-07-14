@@ -1,16 +1,16 @@
 import time
+from dataclasses import asdict
 
 import jwt
 import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 
 import sc_server_auth.configs.constants as cnt
-from sc_server_auth.configs.models import TokenType
+from sc_server_auth.configs.models import Messages, TokenType
 from sc_server_auth.configs.params import params
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.log import get_file_only_logger
 from sc_server_auth.server import models
-from sc_server_auth.server.common import get_response_message
 from sc_server_auth.server.database import DataBase
 
 log = get_file_only_logger(__name__)
@@ -53,7 +53,7 @@ async def get_tokens(credentials: models.CredentialsModel):
     if database.is_user_valid(username, password):
         access_token_data = _generate_token(TokenType.ACCESS, str(username))
         refresh_token_data = _generate_token(TokenType.REFRESH, str(username))
-        response = get_response_message(cnt.MSG_ALL_DONE)
+        response = asdict(Messages.all_done)
         response.update(
             {
                 cnt.ACCESS_TOKEN: {
@@ -65,7 +65,7 @@ async def get_tokens(credentials: models.CredentialsModel):
             }
         )
     else:
-        response = get_response_message(cnt.MSG_USER_NOT_FOUND)
+        response = Messages.user_not_found
     log.debug(f"GetTokens response: " + str(response))
     return response
 
@@ -88,13 +88,13 @@ async def get_access_token(token: models.TokenModel):
         cnt.EXP
     ]
 
-    log.debug(f"Username: " + str(username))
+    log.debug(f"Username: " + username)
 
     if ttl - time.time() < params[cnt.ACCESS_TOKEN_LIFE_SPAN]:
-        response = get_response_message(cnt.MSG_TOKEN_ERROR)
+        response = asdict(Messages.token_expired)
     else:
         access_token_data = _generate_token(TokenType.ACCESS, username)
-        response = get_response_message(cnt.MSG_ALL_DONE)
+        response = asdict(Messages.all_done)
         response.update(
             {
                 cnt.ACCESS_TOKEN: {

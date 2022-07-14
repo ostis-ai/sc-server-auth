@@ -1,6 +1,5 @@
-import configs.constants as cnt
-
-from sc_server_auth.configs.params import params
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.models import Messages
 from sc_server_auth.tests.common import BaseServerTestCase
 
 
@@ -20,7 +19,7 @@ class TestUsers(BaseServerTestCase):
 
     def test_delete_user_with_wrong_token(self):
         delete_user_response = self.test_client.delete(url=self.user_url, json=self.delete_user_request()).json()
-        self.assertEqual(delete_user_response["detail"], params[cnt.MSG_ACCESS_DENIED])
+        self.assertEqual(delete_user_response["detail"], Messages.access_denied.msg_text)
 
     def test_delete_user_with_wrong_name(self):
         user_to_remove = self.delete_user_request(token=self.access_token, name="Unknown_user")
@@ -41,7 +40,7 @@ class TestUsers(BaseServerTestCase):
 
     def test_create_user_with_wrong_token(self):
         response = self.test_client.post(url=self.user_url, json=self.create_user_request()).json()
-        self.assertEqual(response["detail"], params[cnt.MSG_ACCESS_DENIED])
+        self.assertEqual(response["detail"], Messages.access_denied.msg_text)
 
     def test_create_user_with_wrong_password(self):
         user = self.create_user_request(token=self.access_token, password="ivan_006")
@@ -63,4 +62,4 @@ class TestUsers(BaseServerTestCase):
 
     def test_get_users_wrong_token(self):
         response = self.test_client.get(url=self.users_url, json=self.get_token_request()).json()
-        self.assertEqual(response["detail"], params[cnt.MSG_ACCESS_DENIED])
+        self.assertEqual(response["detail"], Messages.access_denied.msg_text)

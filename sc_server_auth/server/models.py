@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from pydantic.class_validators import validator
 
 import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.models import Messages
 from sc_server_auth.configs.params import params
 from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
 
@@ -22,7 +23,7 @@ def _validate_token(value):
         jwt.exceptions.ExpiredSignatureError,
         FileNotFoundError,
     ):
-        raise HTTPException(status_code=403, detail=params[cnt.MSG_ACCESS_DENIED])
+        raise HTTPException(status_code=403, detail=Messages.access_denied.msg_text)
     return value
 
 
