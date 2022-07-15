@@ -20,6 +20,7 @@ pylint = "2.13.7"
 isort = "^5.10.1"
 coverage = "^6.4.1"
 psycopg2-binary = "^2.9.3"
+toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 
