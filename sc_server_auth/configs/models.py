@@ -1,33 +1,10 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, IntEnum
 
 
-class TokenType(Enum):
+class TokenType(IntEnum):
     ACCESS = 0
     REFRESH = 1
-
-
-class Database(Enum):
-    SQLITE = "sqlite"
-    POSTGRES = "postgres"
-
-
-class IsolationLevel(Enum):
-    READ_UNCOMMITTED = "READ UNCOMMITTED"
-    READ_COMMITTED = "READ COMMITTED"
-    REPEATABLE_READ = "REPEATABLE READ"
-    SERIALIZABLE = "SERIALIZABLE"
-
-
-@dataclass
-class DatabaseParams:
-    database: Database = Database.SQLITE  # Change database here
-    user: str = "sc_auth"
-    password: str = "sc_auth"
-    name: str = "sc_auth"
-    host: str = "localhost"
-    isolation_level: IsolationLevel = IsolationLevel.READ_UNCOMMITTED
-    # TODO: parse it
 
 
 @dataclass
@@ -47,3 +24,60 @@ class Messages:
     access_denied = Message(6, "Access denied")
     invalid_request = Message(7, "Invalid request")
     token_expired = Message(8, "Token expired")
+
+
+@dataclass
+class CommonParams:
+    logging_level: str
+
+
+@dataclass
+class TokensParams:
+    access_token_life_span: int
+    refresh_token_life_span: int
+    bits: int
+    issuer: str
+
+
+@dataclass
+class ServerParams:
+    protocol: str
+    host: str
+    port: str
+
+
+# @dataclass
+# class ScServerParams(ServerParams):
+#     ws_json_url: str
+#     sc_create_user_endpoint: str
+
+
+class Database(Enum):
+    SQLITE = "sqlite"
+    POSTGRES = "postgres"
+
+
+class IsolationLevel(Enum):
+    READ_UNCOMMITTED = "READ UNCOMMITTED"
+    READ_COMMITTED = "READ COMMITTED"
+    REPEATABLE_READ = "REPEATABLE READ"
+    SERIALIZABLE = "SERIALIZABLE"
+
+
+@dataclass
+class DatabaseParams:
+    database: Database
+    user: str
+    password: str
+    name: str
+    host: str
+    isolation_level: IsolationLevel
+
+
+@dataclass
+class Config:
+    common: CommonParams
+    tokens: TokensParams
+    server: ServerParams
+    # sc_server: ScServerParams
+    database: DatabaseParams

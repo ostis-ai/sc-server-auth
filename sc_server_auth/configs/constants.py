@@ -1,35 +1,42 @@
-# database and common
+# config
+COMMON = "common"
+TOKENS = "tokens"
+SERVER = "server"
+SC_SERVER = "sc_server"
+DATABASE = "database"
+
+# common
+LOGGING_LEVEL = "logging_level"
+
+# database
+POSTGRES = "postgres"
+ISOLATION_LEVEL = "isolation_level"
+
 USER = "user"
 ID = "id"
 NAME = "name"
 PASSWORD = "password"
-NEW_NAME = "new_name"
-BITS = "bits"
-SC_SERVER_URL = "sc_server_url"
-SC_CREATE_USER_ENDPOINT = "sc_create_user_endpoint"
-SC_CREATE_USER_URL = "sc_create_user_url"
-AUTH_SERVER = "auth_server"
-WS_JSON_URL = "ws_json_url"
+
+# server
 PROTOCOL = "protocol"
 HOST = "host"
 PORT = "port"
+
+# server endpoints
 GET_TOKENS_ENDPOINT = "get_tokens_endpoint"
 GET_ACCESS_TOKEN_ENDPOINT = "get_access_toke_endpoint"
 USER_ENDPOINT = "user_endpoint"
 USERS_ENDPOINT = "users_endpoint"
 
+# sc server (not used)
+SC_SERVER_URL = "sc_server_url"
+SC_CREATE_USER_ENDPOINT = "sc_create_user_endpoint"
+SC_CREATE_USER_URL = "sc_create_user_url"
+AUTH_SERVER = "auth_server"
+WS_JSON_URL = "ws_json_url"
+
 # messages
-MSG_ACCESS_DENIED = "msg_access_denied"
-MSG_INVALID_REQUEST = "msg_invalid_request"
-# MSG_ALL_DONE = "msg_all_done"
-# MSG_INVALID_USERNAME = "msg_invalid_username"
-# MSG_INVALID_PASSWORD = "msg_invalid_password"
-# MSG_USER_NOT_FOUND = "msg_user_not_found"
-# MSG_USER_IS_IN_BASE = "msg_user_is_in_base"
-# MSG_SC_SERVER_ERROR = "msg_sc_server_error"
-# MSG_SC_SERVER_NO_CONNECTION = "msg_sc_server_no_connection"
 MSG_CODE = "msg_code"
-# MSG_CODES = "msg_codes"
 MSG_TEXT = "msg_text"
 
 # token properties and keys
@@ -43,6 +50,7 @@ ACCESS_TOKEN = "access_token"
 ACCESS_TOKEN_LIFE_SPAN = "access_token_life_span"
 REFRESH_TOKEN = "refresh_token"
 REFRESH_TOKEN_LIFE_SPAN = "refresh_token_life_span"
+BITS = "bits"
 ISSUER = "issuer"
 USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"

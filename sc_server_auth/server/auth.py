@@ -6,14 +6,15 @@ import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 
 import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.configs.models import Messages, TokenType
-from sc_server_auth.configs.params import params
+from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
-from sc_server_auth.log import get_file_only_logger
 from sc_server_auth.server import models
 from sc_server_auth.server.database import DataBase
 
 log = get_file_only_logger(__name__)
+config = get_config().tokens
 
 router = APIRouter(
     prefix="/auth",
@@ -26,17 +27,15 @@ def _generate_token(token_type: TokenType, username: str) -> bytes:
         _generate_keys()
     with open(PRIVATE_KEY_PATH, "rb") as file:
         private_key = file.read()
-    access_token_life_span = params[cnt.ACCESS_TOKEN_LIFE_SPAN]
-    refresh_token_life_span = params[cnt.REFRESH_TOKEN_LIFE_SPAN]
-    life_span = access_token_life_span if token_type == TokenType.ACCESS else refresh_token_life_span
-    payload = {cnt.ISS: params[cnt.ISSUER], cnt.EXP: time.time() + life_span, cnt.USERNAME: username}
+    life_span = config.access_token_life_span if token_type == TokenType.ACCESS else config.refresh_token_life_span
+    payload = {cnt.ISS: config.issuer, cnt.EXP: time.time() + life_span, cnt.USERNAME: username}
     token = jwt.encode(payload, key=private_key, algorithm="RS256")
     return token
 
 
 def _generate_keys() -> None:
     pkey = crypto.PKey()
-    pkey.generate_key(type=crypto.TYPE_RSA, bits=params[cnt.BITS])
+    pkey.generate_key(type=crypto.TYPE_RSA, bits=config.bits)
     with open(PRIVATE_KEY_PATH, "wb") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey))
     with open(PUBLIC_KEY_PATH, "wb") as f:
@@ -80,17 +79,13 @@ async def get_access_token(token: models.TokenModel):
         raise Exception(FileNotFoundError)
     request_params = token.dict()
     log.debug(f"GetAccessToken request: " + str(request_params))
-    username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
-        cnt.USERNAME
-    ]
+    username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm="RS256")[cnt.USERNAME]
 
-    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
-        cnt.EXP
-    ]
+    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm="RS256")[cnt.EXP]
 
     log.debug(f"Username: " + username)
 
-    if ttl - time.time() < params[cnt.ACCESS_TOKEN_LIFE_SPAN]:
+    if ttl - time.time() < config.access_token_life_span:
         response = asdict(Messages.token_expired)
     else:
         access_token_data = _generate_token(TokenType.ACCESS, username)

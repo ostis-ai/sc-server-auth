@@ -1,6 +1,8 @@
 from pathlib import Path
 
 CONFIG_DIR_PATH = Path(__file__).resolve().parent
+DEV_CONFIG_PATH = CONFIG_DIR_PATH.joinpath("settings.toml")
+
 ROOT_DIR_PATH = CONFIG_DIR_PATH.parent
 
 PRIVATE_KEY_PATH = ROOT_DIR_PATH.joinpath("private.pem")

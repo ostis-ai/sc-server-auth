@@ -1,7 +1,10 @@
 from sqlalchemy import create_engine
 
-from sc_server_auth.configs.models import Database, DatabaseParams
+from sc_server_auth.configs.models import Database
+from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import SQLITE_PATH
+
+config = get_config().database
 
 
 def create_engine_sqlite():
@@ -10,8 +13,8 @@ def create_engine_sqlite():
 
 def create_engine_postgres():
     return create_engine(
-        f"postgresql://{DatabaseParams.user}:{DatabaseParams.password}@{DatabaseParams.host}/{DatabaseParams.name}",
-        execution_options={"isolation_level": DatabaseParams.isolation_level.value},
+        f"postgresql://{config.user}:{config.password}@{config.host}/{config.name}",
+        execution_options={"isolation_level": config.isolation_level.value},
     )
 
 

@@ -3,8 +3,8 @@ from dataclasses import asdict
 from fastapi.routing import APIRouter
 
 import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.configs.models import Message, Messages
-from sc_server_auth.log import get_file_only_logger
 from sc_server_auth.server import models
 from sc_server_auth.server.database import DataBase
 from sc_server_auth.server.verifiers import password_verifier, username_verifier
@@ -31,12 +31,14 @@ def _verify_user_info_in_database(database: DataBase, name: str, password: str) 
 async def create_user(user: models.CreateUserModel):
     user_info = user.dict()
     log.debug(f"CreateUser request: " + str(user_info))
+    name, password = user_info[cnt.NAME], user_info[cnt.PASSWORD]
     database = DataBase()
-    response = _verify_user_info_in_database(database, name=user_info[cnt.NAME], password=user_info[cnt.PASSWORD])
-    if response == Messages.all_done:
-        database.add_user(user_info[cnt.NAME], user_info[cnt.PASSWORD])
+    response_message = _verify_user_info_in_database(database, name, password)
+    if response_message == Messages.all_done:
+        database.add_user(name, password)
+    response = asdict(response_message)
     log.debug(f"CreateUser response: " + str(response))
-    return asdict(response)
+    return response
 
 
 @router.delete("/user", response_model=models.ResponseModel)
@@ -45,9 +47,10 @@ async def delete_user(user: models.UserModel):
     log.debug(f"DeleteUser request: " + str(user_info))
     database = DataBase()
     delete_users_count = database.delete_user_by_name(user_info[cnt.NAME])
-    response = Messages.user_not_found if delete_users_count == 0 else Messages.all_done
+    response_message = Messages.user_not_found if delete_users_count == 0 else Messages.all_done
+    response = asdict(response_message)
     log.debug(f"DeleteUser response: " + str(response))
-    return asdict(response)
+    return response
 
 
 @router.get("/users")
