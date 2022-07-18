@@ -41,7 +41,11 @@ grant all privileges on database sc_auth to sc_auth;
 
 **Activation**
 
-Change in sc_server_auth/config.py 24:28  <!--- temporally -->
+Set postgres in `sc_server_auth/config.py:24:28`  <!--- temporally, config in progress -->
+
+**Insert default values**
+
+Run `database_default_insert.sql` in pycharm  <!--- temporally -->
 
 ## Local-CI tool
 
