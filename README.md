@@ -72,14 +72,9 @@ If you want to run only certain checks, see help for this command:
 scripts/local_ci.sh -h
 ```
 
-To start auth-server with default settings:
+To start auth-server:
 ```
-bash scripts/run_server.sh
-```
-
-You can specify ip and port for starting server by passing arguments:
-```
-bash scripts/run_server.sh -i your_ip -p your_port
+python3 -m sc_server_auth [-h] [-H HOST] [-P PORT] [-d DATABASE] [-l LOG_LEVEL]
 ```
 
 You can check current endpoints in swagger docs by url:

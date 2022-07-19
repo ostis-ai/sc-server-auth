@@ -6,7 +6,7 @@ SC_SERVER = "sc_server"
 DATABASE = "database"
 
 # common
-LOGGING_LEVEL = "logging_level"
+LOG_LEVEL = "log_level"
 
 # database
 POSTGRES = "postgres"

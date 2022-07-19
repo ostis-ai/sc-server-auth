@@ -19,7 +19,7 @@ class Parser:  # pylint: disable=too-few-public-methods
         data_postgres = data_database[c.POSTGRES]
 
         cls._config = m.Config(
-            common=m.CommonParams(logging_level=data_common[c.LOGGING_LEVEL]),
+            common=m.CommonParams(log_level=data_common[c.LOG_LEVEL]),
             tokens=m.TokensParams(
                 access_token_life_span=data_tokens[c.ACCESS_TOKEN_LIFE_SPAN],
                 refresh_token_life_span=data_tokens[c.REFRESH_TOKEN_LIFE_SPAN],

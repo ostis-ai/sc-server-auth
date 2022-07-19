@@ -28,7 +28,7 @@ class Messages:
 
 @dataclass
 class CommonParams:
-    logging_level: str
+    log_level: str
 
 
 @dataclass
@@ -43,7 +43,7 @@ class TokensParams:
 class ServerParams:
     protocol: str
     host: str
-    port: str
+    port: int
 
 
 # @dataclass

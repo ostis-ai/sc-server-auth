@@ -17,6 +17,6 @@ def get_file_only_logger(name):
 
 def get_default_logger(name):
     logger = logging.getLogger(name)
-    logger.setLevel(get_config().common.logging_level)
+    logger.setLevel(get_config().common.log_level)
     logger.addHandler(logging.StreamHandler())
     return logger

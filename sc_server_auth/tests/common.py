@@ -10,7 +10,7 @@ config = get_config()
 
 
 class BaseServerTestCase(unittest.TestCase):
-    base_url = f"{config.server.protocol}{config.server.host}{config.server.port}"
+    base_url = f"{config.server.protocol}{config.server.host}:{config.server.port}"
     tokens_url = f"{base_url}/auth/get_tokens"
     access_token_url = f"{base_url}/auth/get_access_token"
     user_url = f"{base_url}/admin/user"
