@@ -1,11 +1,15 @@
+import os
+from dataclasses import fields
+
 import toml
+from dotenv import load_dotenv
 
 import sc_server_auth.configs.constants as c
 import sc_server_auth.configs.models as m
 from sc_server_auth.configs.paths import DEV_CONFIG_PATH
 
 
-class Parser:  # pylint: disable=too-few-public-methods
+class Parser:
     _config: m.Config = None
 
     @classmethod
@@ -49,6 +53,29 @@ class Parser:  # pylint: disable=too-few-public-methods
         if cls._config is None:
             cls._parse()
         return cls._config
+
+    @classmethod
+    def set_config_args(cls, args: m.RunArgs) -> None:
+        cls._load_dotenv_args(args)
+        config = cls.get_config()
+        if args.host:
+            config.server.host = args.host
+        if args.port:
+            config.server.port = args.port
+        if args.database:
+            config.database.database = args.database
+        if args.log_level:
+            config.common.log_level = args.log_level
+
+    @classmethod
+    def _load_dotenv_args(cls, args: m.RunArgs) -> None:
+        if args.dot_env:
+            load_dotenv(dotenv_path=args.dot_env)
+        else:
+            load_dotenv()
+        for field in fields(args):
+            if env_var := os.environ.get(field.name.upper()):
+                setattr(args, field.name, field.type(env_var))
 
 
 get_config = Parser.get_config

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum, IntEnum
+from pathlib import Path
 
 
 class TokenType(IntEnum):
@@ -81,3 +82,13 @@ class Config:
     server: ServerParams
     # sc_server: ScServerParams
     database: DatabaseParams
+
+
+@dataclass
+class RunArgs:
+    host: str = None
+    port: int = None
+    database: Database = None
+    log_level: str = None
+    reload: bool = False
+    dot_env: Path = None

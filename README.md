@@ -74,7 +74,7 @@ scripts/local_ci.sh -h
 
 To start auth-server:
 ```
-python3 -m sc_server_auth [-h] [-H HOST] [-P PORT] [-d DATABASE] [-l LOG_LEVEL]
+python3 -m sc_server_auth [-h] [-H HOST] [-P PORT] [-d DATABASE] [-l LOG_LEVEL] [-r RELOAD] [-e DOT_ENV]
 ```
 
 You can check current endpoints in swagger docs by url:
