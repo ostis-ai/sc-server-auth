@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from enum import Enum, IntEnum
 from pathlib import Path
 
+import sc_server_auth.configs.constants as c
+
 
 class TokenType(IntEnum):
     ACCESS = 0
@@ -47,15 +49,9 @@ class ServerParams:
     port: int
 
 
-# @dataclass
-# class ScServerParams(ServerParams):
-#     ws_json_url: str
-#     sc_create_user_endpoint: str
-
-
 class Database(Enum):
-    SQLITE = "sqlite"
-    POSTGRES = "postgres"
+    SQLITE = c.SQLITE
+    POSTGRES = c.POSTGRES
 
 
 class IsolationLevel(Enum):
@@ -80,7 +76,6 @@ class Config:
     common: CommonParams
     tokens: TokensParams
     server: ServerParams
-    # sc_server: ScServerParams
     database: DatabaseParams
 
 

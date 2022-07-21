@@ -37,12 +37,11 @@ sudo -u postgres psql
 create database sc_auth;
 create user sc_auth with encrypted password 'sc_auth';
 grant all privileges on database sc_auth to sc_auth;
-\q
 ```
 
 **Activation**
 
-Set postgres in `sc_server_auth/config.py:24:28`  <!--- temporally, config in progress -->
+Set postgres in sc_server_auth/configs/settings.toml or as argument in server run script
 
 **Insert default values (after server running)**
 
@@ -55,7 +54,6 @@ Write password "sc_auth" and run command:
 ```postgresql
 insert into "user"(id, name, password)
 values (1, 'admin', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3');
-\q
 ```
 
 ## Local-CI tool

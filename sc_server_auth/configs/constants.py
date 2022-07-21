@@ -9,6 +9,7 @@ DATABASE = "database"
 LOG_LEVEL = "log_level"
 
 # database
+SQLITE = "sqlite"
 POSTGRES = "postgres"
 ISOLATION_LEVEL = "isolation_level"
 
@@ -27,13 +28,6 @@ GET_TOKENS_ENDPOINT = "get_tokens_endpoint"
 GET_ACCESS_TOKEN_ENDPOINT = "get_access_toke_endpoint"
 USER_ENDPOINT = "user_endpoint"
 USERS_ENDPOINT = "users_endpoint"
-
-# sc server (not used)
-SC_SERVER_URL = "sc_server_url"
-SC_CREATE_USER_ENDPOINT = "sc_create_user_endpoint"
-SC_CREATE_USER_URL = "sc_create_user_url"
-AUTH_SERVER = "auth_server"
-WS_JSON_URL = "ws_json_url"
 
 # messages
 MSG_CODE = "msg_code"
@@ -54,6 +48,7 @@ BITS = "bits"
 ISSUER = "issuer"
 USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"
+RS256 = "RS256"
 
 # for new user generation
 RREL_1 = "rrel_1"

@@ -11,7 +11,7 @@ def main():
     config = get_config()
     args = RunArgs()
 
-    parser = ArgumentParser(prog="python3 -m sc_server_auth", description="Run SC Server")
+    parser = ArgumentParser(prog="python3 -m sc_server_auth", description="Run auth-server application")
     parser.add_argument("-H", "--host", help=f"Bind host (default: {config.server.host})", type=str)
     parser.add_argument("-P", "--port", help=f"Bind port (default: {config.server.port})", type=int)
     parser.add_argument(

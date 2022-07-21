@@ -29,7 +29,7 @@ def _generate_token(token_type: TokenType, username: str) -> bytes:
         private_key = file.read()
     life_span = config.access_token_life_span if token_type == TokenType.ACCESS else config.refresh_token_life_span
     payload = {cnt.ISS: config.issuer, cnt.EXP: time.time() + life_span, cnt.USERNAME: username}
-    token = jwt.encode(payload, key=private_key, algorithm="RS256")
+    token = jwt.encode(payload, key=private_key, algorithm=cnt.RS256)
     return token
 
 
@@ -79,21 +79,17 @@ async def get_access_token(token: models.TokenModel):
         raise Exception(FileNotFoundError)
     request_params = token.dict()
     log.debug(f"GetAccessToken request: " + str(request_params))
-    username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm="RS256")[cnt.USERNAME]
-
-    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm="RS256")[cnt.EXP]
-
+    decoded_data = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm=cnt.RS256)
+    username = decoded_data[cnt.USERNAME]
     log.debug(f"Username: " + username)
-
-    if ttl - time.time() < config.access_token_life_span:
+    if decoded_data[cnt.EXP] - time.time() < config.access_token_life_span:
         response = asdict(Messages.token_expired)
     else:
-        access_token_data = _generate_token(TokenType.ACCESS, username)
         response = asdict(Messages.all_done)
         response.update(
             {
                 cnt.ACCESS_TOKEN: {
-                    cnt.TOKEN: access_token_data.decode(),
+                    cnt.TOKEN: _generate_token(TokenType.ACCESS, username).decode(),
                 }
             }
         )

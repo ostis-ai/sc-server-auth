@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 from pydantic.class_validators import validator
 
+import sc_server_auth.configs.constants as cnt
 from sc_server_auth.configs.models import Messages
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
@@ -16,7 +17,7 @@ def _validate_token(value):
     try:
         with open(PUBLIC_KEY_PATH, "rb") as file:
             public_key = file.read()
-            jwt.decode(value, public_key, issuer=config.issuer, algorithm="RS256")
+            jwt.decode(value, public_key, issuer=config.issuer, algorithm=cnt.RS256)
     except (
         jwt.exceptions.InvalidTokenError,
         jwt.exceptions.InvalidSignatureError,

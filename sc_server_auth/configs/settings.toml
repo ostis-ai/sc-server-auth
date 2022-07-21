@@ -14,13 +14,6 @@ protocol = "http://"
 host = "127.0.0.1"
 port = 5000
 
-#[sc_server]
-#protocol = "ws://"
-#host = "127.0.0.1"
-#port = ":8090"
-#ws_json_url = "/ws_json"
-#sc_create_user_endpoint = "/admin/user"
-
 [database]
 database = "sqlite"
 
