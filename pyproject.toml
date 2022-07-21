@@ -21,6 +21,7 @@ isort = "^5.10.1"
 coverage = "^6.4.1"
 psycopg2-binary = "^2.9.3"
 toml = "^0.10.2"
+python-dotenv = "^0.20.0"
 
 [tool.poetry.dev-dependencies]
 
