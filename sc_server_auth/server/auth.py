@@ -11,6 +11,8 @@ from sc_server_auth.server import constants as cnt
 from sc_server_auth.server import models
 from sc_server_auth.server.common import get_response_message
 from sc_server_auth.server.database import DataBase
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 log = get_file_only_logger(__name__)
 
@@ -101,5 +103,25 @@ async def get_access_token(token: models.TokenModel):
                 }
             }
         )
+    log.debug(f"GetAccessToken response: " + str(response))
+    return response
+
+
+@router.post("/get_google_token", response_model=models.GetAccessTokenResponseModel)
+async def get_google_token():
+    flow = InstalledAppFlow.from_client_secrets_file(
+        params[cnt.GOOGLE_CLIENT_SECRET], ['https://www.googleapis.com/auth/userinfo.profile']
+    )
+    creds = flow.run_local_server(port=0)
+    creds.refresh(Request())
+
+    response = get_response_message(cnt.MSG_ALL_DONE)
+    response.update(
+        {
+            cnt.ACCESS_TOKEN: {
+                cnt.TOKEN: creds.id_token,
+            }
+        }
+    )
     log.debug(f"GetAccessToken response: " + str(response))
     return response

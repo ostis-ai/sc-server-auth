@@ -32,6 +32,7 @@ params = {
     cnt.SQLITE_DB_PATH: "sqlite:///" + "database.db",
     cnt.PRIVATE_KEY_PATH: "private.pem",
     cnt.PUBLIC_KEY_PATH: "public.pem",
+    cnt.GOOGLE_CLIENT_SECRET: "sc_server_auth/client_secret.json",
     # validator patters
     cnt.USERNAME_PATTERN: r"^[a-zA-Z][a-zA-Z0-9-_.]{1,20}$",
     cnt.PASSWORD_PATTERN: r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&-_]{6,}$",

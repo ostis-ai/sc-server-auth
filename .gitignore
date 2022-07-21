@@ -16,6 +16,7 @@ manifest.json
 *.log
 *.log.*
 *.pem
+client_secret.json
 
 .vscode
 .idea
