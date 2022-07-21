@@ -4,6 +4,8 @@ from os.path import isfile
 import jwt
 import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 import sc_server_auth.configs.constants as c
 import sc_server_auth.server.models as m
@@ -70,6 +72,16 @@ async def get_access_token(token: m.TokenModel):
     log.debug(f"Username: " + username)
     if decoded_data[c.EXP] - time.time() < config.access_token_life_span:
         response = m.ResponseModels.token_expired.dict()
+    username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
+        cnt.USERNAME
+    ]
+
+    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[cnt.EXP]
+
+    log.debug(f"Username: " + str(username))
+
+    if ttl - time.time() < params[cnt.ACCESS_TOKEN_LIFE_SPAN]:
+        response = get_response_message(cnt.MSG_TOKEN_ERROR)
     else:
         response = m.ResponseModels.all_done.dict()
         response.update(
@@ -79,5 +91,25 @@ async def get_access_token(token: m.TokenModel):
                 }
             }
         )
+    log.debug(f"GetAccessToken response: " + str(response))
+    return response
+
+
+@router.post("/get_google_token", response_model=models.GetAccessTokenResponseModel)
+async def get_google_token():
+    flow = InstalledAppFlow.from_client_secrets_file(
+        params[cnt.GOOGLE_CLIENT_SECRET], ["https://www.googleapis.com/auth/userinfo.profile"]
+    )
+    creds = flow.run_local_server(port=0)
+    creds.refresh(Request())
+
+    response = get_response_message(cnt.MSG_ALL_DONE)
+    response.update(
+        {
+            cnt.ACCESS_TOKEN: {
+                cnt.TOKEN: creds.id_token,
+            }
+        }
+    )
     log.debug(f"GetAccessToken response: " + str(response))
     return response
