@@ -1,6 +1,8 @@
 import time
+from os.path import isfile
 
 import jwt
+import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 
 import sc_server_auth.configs.constants as c
@@ -9,10 +11,10 @@ from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.server.database import DataBase
-from sc_server_auth.server.keys import generate_keys_if_not_exist
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 log = get_file_only_logger(__name__)
-config = get_config().tokens
 
 router = APIRouter(
     prefix="/auth",

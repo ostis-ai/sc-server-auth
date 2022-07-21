@@ -50,6 +50,12 @@ USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"
 RS256 = "RS256"
 
+# paths
+SQLITE_DB_PATH = "sqlite_db_path"
+PRIVATE_KEY_PATH = "private_key"
+PUBLIC_KEY_PATH = "public_key"
+GOOGLE_CLIENT_SECRET = "google_client_secret"
+
 # for new user generation
 RREL_1 = "rrel_1"
 RREL_2 = "rrel_2"
