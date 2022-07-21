@@ -1,20 +1,11 @@
-from sqlalchemy import Column, Integer, String, create_engine, event
-from sqlalchemy.engine import Engine
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-from sc_server_auth.config import params
+from sc_server_auth.config import db_engines, db_params
 from sc_server_auth.server import constants as cnt
 
 Base = declarative_base()
-
-
-@event.listens_for(Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA foreign_keys=ON")
-    cursor.close()
 
 
 class User(Base):
@@ -33,11 +24,9 @@ class User(Base):
 
 class DataBase:
     def __init__(self) -> None:
-        self.engine = create_engine(params[cnt.SQLITE_DB_PATH])
+        self.engine = db_engines[db_params[cnt.DATABASE]]()
         self.session = None
-
-    def init(self) -> None:
-        Base.metadata.create_all(self.engine)
+        Base.metadata.create_all(self.engine, checkfirst=True)
         self._session().commit()
 
     def _session(self):

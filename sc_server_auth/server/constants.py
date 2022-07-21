@@ -1,4 +1,6 @@
 # database and common
+DATABASE = "database"
+ISOLATION_LEVEL = "isolation_level"
 USER = "user"
 USERS = "users"
 ID = "id"
@@ -53,7 +55,6 @@ USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"
 
 # paths
-SQLITE_DB_PATH = "sqlite_db_path"
 PRIVATE_KEY_PATH = "private_key"
 PUBLIC_KEY_PATH = "public_key"
 

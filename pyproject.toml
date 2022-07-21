@@ -19,6 +19,7 @@ black = "^22.6.0"
 pylint = "2.13.7"
 isort = "^5.10.1"
 coverage = "^6.4.1"
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 
