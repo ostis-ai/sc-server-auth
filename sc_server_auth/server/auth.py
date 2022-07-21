@@ -4,6 +4,8 @@ from os.path import isfile
 import jwt
 import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 from sc_server_auth.config import TokenType, params
 from sc_server_auth.log import get_file_only_logger
@@ -11,8 +13,6 @@ from sc_server_auth.server import constants as cnt
 from sc_server_auth.server import models
 from sc_server_auth.server.common import get_response_message
 from sc_server_auth.server.database import DataBase
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 log = get_file_only_logger(__name__)
 
@@ -85,9 +85,7 @@ async def get_access_token(token: models.TokenModel):
         cnt.USERNAME
     ]
 
-    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
-        cnt.EXP
-    ]
+    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[cnt.EXP]
 
     log.debug(f"Username: " + str(username))
 
@@ -110,7 +108,7 @@ async def get_access_token(token: models.TokenModel):
 @router.post("/get_google_token", response_model=models.GetAccessTokenResponseModel)
 async def get_google_token():
     flow = InstalledAppFlow.from_client_secrets_file(
-        params[cnt.GOOGLE_CLIENT_SECRET], ['https://www.googleapis.com/auth/userinfo.profile']
+        params[cnt.GOOGLE_CLIENT_SECRET], ["https://www.googleapis.com/auth/userinfo.profile"]
     )
     creds = flow.run_local_server(port=0)
     creds.refresh(Request())

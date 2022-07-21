@@ -3,19 +3,19 @@ from typing import Optional
 
 import jwt
 from fastapi import HTTPException
+from google.auth.transport import requests
+from google.oauth2 import id_token
 from pydantic import BaseModel
 from pydantic.class_validators import validator
 
 from sc_server_auth.config import params
 from sc_server_auth.server import constants as cnt
-from google.oauth2 import id_token
-from google.auth.transport import requests
 
 
 def _validate_google_token(value):
     try:
         with open(params[cnt.GOOGLE_CLIENT_SECRET]) as file:
-            client_id = json.loads(file.read())['installed']["client_id"]
+            client_id = json.loads(file.read())["installed"]["client_id"]
             id_token.verify_oauth2_token(value, requests.Request(), client_id)
     except Exception:
         raise HTTPException(status_code=403, detail=params[cnt.MSG_ACCESS_DENIED])
@@ -29,11 +29,11 @@ def _validate_server_token(value):
             public_key = file.read()
             jwt.decode(value, public_key, issuer=params[cnt.ISSUER], algorithm="RS256")
     except (
-            jwt.exceptions.InvalidTokenError,
-            jwt.exceptions.InvalidSignatureError,
-            jwt.exceptions.InvalidIssuerError,
-            jwt.exceptions.ExpiredSignatureError,
-            FileNotFoundError,
+        jwt.exceptions.InvalidTokenError,
+        jwt.exceptions.InvalidSignatureError,
+        jwt.exceptions.InvalidIssuerError,
+        jwt.exceptions.ExpiredSignatureError,
+        FileNotFoundError,
     ):
         raise HTTPException(status_code=403, detail=params[cnt.MSG_ACCESS_DENIED])
     return value
