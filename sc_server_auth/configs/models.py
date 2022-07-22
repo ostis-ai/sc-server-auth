@@ -1,32 +1,8 @@
 from dataclasses import dataclass
-from enum import Enum, IntEnum
+from enum import Enum
 from pathlib import Path
 
 import sc_server_auth.configs.constants as c
-
-
-class TokenType(IntEnum):
-    ACCESS = 0
-    REFRESH = 1
-
-
-@dataclass
-class Message:
-    msg_code: int
-    msg_text: str
-
-
-@dataclass(frozen=True)
-class Messages:
-    all_done = Message(0, "All done")
-    invalid_username = Message(1, "User name is incorrect")
-    invalid_password = Message(2, "User password is incorrect")
-    user_not_found = Message(3, "User not found in database")
-    user_is_in_base = Message(4, "User already exists in database")
-    sc_server_error = Message(5, "An error has occurred on sc-server")
-    access_denied = Message(6, "Access denied")
-    invalid_request = Message(7, "Invalid request")
-    token_expired = Message(8, "Token expired")
 
 
 @dataclass
