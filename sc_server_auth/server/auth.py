@@ -2,7 +2,6 @@ import time
 from dataclasses import asdict
 
 import jwt
-import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 
 import sc_server_auth.configs.constants as cnt
@@ -12,6 +11,7 @@ from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.server import models
 from sc_server_auth.server.database import DataBase
+from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 log = get_file_only_logger(__name__)
 config = get_config().tokens
@@ -23,23 +23,13 @@ router = APIRouter(
 
 
 def _generate_token(token_type: TokenType, username: str) -> bytes:
-    if not PRIVATE_KEY_PATH.exists():
-        _generate_keys()
+    generate_keys_if_not_exist()
     with open(PRIVATE_KEY_PATH, "rb") as file:
         private_key = file.read()
     life_span = config.access_token_life_span if token_type == TokenType.ACCESS else config.refresh_token_life_span
     payload = {cnt.ISS: config.issuer, cnt.EXP: time.time() + life_span, cnt.USERNAME: username}
     token = jwt.encode(payload, key=private_key, algorithm=cnt.RS256)
     return token
-
-
-def _generate_keys() -> None:
-    pkey = crypto.PKey()
-    pkey.generate_key(type=crypto.TYPE_RSA, bits=config.bits)
-    with open(PRIVATE_KEY_PATH, "wb") as f:
-        f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkey))
-    with open(PUBLIC_KEY_PATH, "wb") as f:
-        f.write(crypto.dump_publickey(crypto.FILETYPE_PEM, pkey))
 
 
 @router.post("/get_tokens", response_model=models.GetTokensResponseModel)
@@ -71,12 +61,9 @@ async def get_tokens(credentials: models.CredentialsModel):
 
 @router.post("/get_access_token", response_model=models.GetAccessTokenResponseModel)
 async def get_access_token(token: models.TokenModel):
-    try:
-        with open(PUBLIC_KEY_PATH, "rb") as file:
-            public_key = file.read()
-    except FileNotFoundError:
-        log.error(Exception(FileNotFoundError))
-        raise Exception(FileNotFoundError)
+    generate_keys_if_not_exist()
+    with open(PUBLIC_KEY_PATH, "rb") as file:
+        public_key = file.read()
     request_params = token.dict()
     log.debug(f"GetAccessToken request: " + str(request_params))
     decoded_data = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=config.issuer, algorithm=cnt.RS256)

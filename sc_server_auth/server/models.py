@@ -9,22 +9,18 @@ import sc_server_auth.configs.constants as cnt
 from sc_server_auth.configs.models import Messages
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
+from sc_server_auth.server.keys import generate_keys_if_not_exist
 
-config = get_config().tokens
+config_tokens = get_config().tokens
 
 
 def _validate_token(value):
+    generate_keys_if_not_exist()
     try:
         with open(PUBLIC_KEY_PATH, "rb") as file:
             public_key = file.read()
-            jwt.decode(value, public_key, issuer=config.issuer, algorithm=cnt.RS256)
-    except (
-        jwt.exceptions.InvalidTokenError,
-        jwt.exceptions.InvalidSignatureError,
-        jwt.exceptions.InvalidIssuerError,
-        jwt.exceptions.ExpiredSignatureError,
-        FileNotFoundError,
-    ):
+        jwt.decode(value, public_key, issuer=config_tokens.issuer, algorithm=cnt.RS256)
+    except jwt.exceptions.InvalidTokenError:
         raise HTTPException(status_code=403, detail=Messages.access_denied.msg_text)
     return value
 
