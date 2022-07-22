@@ -12,4 +12,4 @@ LOG_DIR_PATH = ROOT_DIR_PATH.joinpath("loggings")
 LOG_DIR_PATH.mkdir(parents=True, exist_ok=True)
 LOG_PATH = LOG_DIR_PATH.joinpath("external-modules.log")
 
-SQLITE_PATH = ROOT_DIR_PATH.parent.joinpath("database.db")
+SQLITE_PATH = ROOT_DIR_PATH.joinpath("database.db")
