@@ -33,9 +33,10 @@ pylint() {
 }
 
 help() {
+   echo "usage: ./scripts/local_ci.sh [-h] [-t] [-c] [-b] [-p] [-a]"
+   echo
    echo "Local-CI is a special tool to check your code before pushing"
    echo
-   echo "Syntax: scripts/local_ci.sh -[t | c | i | b | p | a | h]"
    echo "options:"
    echo "t     Run unittest"
    echo "c     Run coverage utility"
