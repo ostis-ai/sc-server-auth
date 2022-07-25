@@ -1,25 +1,36 @@
 # SC-server-auth
+
 Authentication server for sc-machine repository
 
 To install poetry run command:
-```sh
+
+```shell
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 - 
 ```
+
 or just do it with pip3 (not recommended):
-```sh
+
+```shell
 pip3 install poetry
 ```
 
 To install dependencies run command:
-```sh
+
+```shell
 poetry env use 3.8
 poetry shell
 poetry install
 ```
 
-Activate the virtual environment is to create a new shell with **_poetry shell_**. 
-To deactivate the virtual environment and **_exit_** this new shell type exit. 
+Activate the virtual environment is to create a new shell with **_poetry shell_**.
+To deactivate the virtual environment and **_exit_** this new shell type exit.
 To deactivate the virtual environment without leaving the shell use **_deactivate_**.
+
+To install pre-commit run next command (this command and others below run in poetry environment):
+
+```shell
+pre-commit install
+```
 
 ## PostgreSQL (optional)
 
@@ -58,29 +69,30 @@ values (1, 'admin', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a
 
 ## Local-CI tool
 
-For check your branch before pushing just run next command:
-```sh
-scripts/local_ci.sh -a
-```
-With option -a local_ci runs all checks, which included black, isort, pylint and unittest. 
+For checking your branch before pushing just run next command:
 
-If you want to run only certain checks, see help for this command:
-
-```sh
-scripts/local_ci.sh -h
+```shell
+./scripts/local_ci.sh [-h] [-t] [-c] [-i] [-b] [-p] [-a]
 ```
 
-To start auth-server:
+For sorting imports and clean code with black run next command:
+
+```shell
+./scripts/sort_imports.sh [-h] [-i] [-b] [-a]
 ```
+
+## Running
+
+To start auth-server run command:
+
+```shell
 python3 -m sc_server_auth [-h] [-H HOST] [-p PORT] [-d DATABASE] [-l LOG_LEVEL] [-r] [-e DOT_ENV]
 ```
 
-You can check current endpoints in swagger docs by url:
-```
-http://127.0.0.1:5000/docs
-```
+After server running you can check endpoints docs by link: http://127.0.0.1:5000/docs
 
-If you dont have keys in sc-server-auth folder you can generate them by making a request to generate token. After that keys will generate automatically.
+If you don't have keys in sc-server-auth folder you can generate them by making a request to generate token. After that
+keys will generate automatically.
 
-Current credentials to test: 
+Current credentials to test:
 login - admin, password - a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3 (SHA256 hash)
