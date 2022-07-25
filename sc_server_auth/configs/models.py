@@ -62,4 +62,4 @@ class RunArgs:
     database: Database = None
     log_level: str = None
     reload: bool = False
-    dot_env: Path = None
+    dot_env: Path = Path(".env")

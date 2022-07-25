@@ -13,7 +13,7 @@ class Parser:
     _config: m.Config = None
 
     @classmethod
-    def _parse(cls):
+    def _parse(cls) -> None:
         data = toml.load(CONFIG_PATH)
         data_common = data[c.COMMON]
         data_tokens = data[c.TOKENS]
@@ -61,10 +61,7 @@ class Parser:
 
     @classmethod
     def _load_dotenv_args(cls, args: m.RunArgs) -> None:
-        if args.dot_env:
-            load_dotenv(dotenv_path=args.dot_env)
-        else:
-            load_dotenv()
+        load_dotenv(dotenv_path=args.dot_env)
         for field in fields(args):
             if env_var := os.environ.get(field.name.upper()):
                 setattr(args, field.name, field.type(env_var))
