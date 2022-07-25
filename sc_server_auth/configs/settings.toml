@@ -8,11 +8,13 @@ access_token_life_span = 1800
 refresh_token_life_span = 2_592_000
 bits = 2048
 issuer = "sc-auth-server"
+google_client_secret = "sc_server_auth/client_secret.json"
 
 [server]
 protocol = "http://"
 host = "127.0.0.1"
 port = 5000
+
 
 [database]
 database = "sqlite"

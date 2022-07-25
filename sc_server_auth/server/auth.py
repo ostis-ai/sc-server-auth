@@ -1,8 +1,6 @@
 import time
-from os.path import isfile
 
 import jwt
-import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -13,10 +11,10 @@ from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.server.database import DataBase
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
+from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 log = get_file_only_logger(__name__)
+config = get_config().tokens
 
 router = APIRouter(
     prefix="/auth",
@@ -72,16 +70,6 @@ async def get_access_token(token: m.TokenModel):
     log.debug(f"Username: " + username)
     if decoded_data[c.EXP] - time.time() < config.access_token_life_span:
         response = m.ResponseModels.token_expired.dict()
-    username = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[
-        cnt.USERNAME
-    ]
-
-    ttl = jwt.decode(request_params[cnt.TOKEN], public_key, issuer=params[cnt.ISSUER], algorithm="RS256")[cnt.EXP]
-
-    log.debug(f"Username: " + str(username))
-
-    if ttl - time.time() < params[cnt.ACCESS_TOKEN_LIFE_SPAN]:
-        response = get_response_message(cnt.MSG_TOKEN_ERROR)
     else:
         response = m.ResponseModels.all_done.dict()
         response.update(
@@ -95,19 +83,19 @@ async def get_access_token(token: m.TokenModel):
     return response
 
 
-@router.post("/get_google_token", response_model=models.GetAccessTokenResponseModel)
+@router.post("/get_google_token", response_model=m.GetAccessTokenResponseModel)
 async def get_google_token():
     flow = InstalledAppFlow.from_client_secrets_file(
-        params[cnt.GOOGLE_CLIENT_SECRET], ["https://www.googleapis.com/auth/userinfo.profile"]
+        config.google_secret, ["https://www.googleapis.com/auth/userinfo.profile"]
     )
     creds = flow.run_local_server(port=0)
     creds.refresh(Request())
 
-    response = get_response_message(cnt.MSG_ALL_DONE)
+    response = m.ResponseModels.all_done.dict()
     response.update(
         {
-            cnt.ACCESS_TOKEN: {
-                cnt.TOKEN: creds.id_token,
+            c.ACCESS_TOKEN: {
+                c.TOKEN: creds.id_token,
             }
         }
     )

@@ -1,6 +1,5 @@
-from enum import Enum
 import json
-from typing import Optional
+from enum import Enum
 
 import jwt
 from fastapi import HTTPException
@@ -39,19 +38,15 @@ class ResponseModels:
     access_denied = ResponseModel(msg_code="6", msg_text="Access denied")
     invalid_request = ResponseModel(msg_code="7", msg_text="Invalid request")
     token_expired = ResponseModel(msg_code="8", msg_text="Token expired")
-from sc_server_auth.config import params
-from sc_server_auth.server import constants as cnt
-from google.oauth2 import id_token
-from google.auth.transport import requests
 
 
 def _validate_google_token(value):
     try:
-        with open(params[cnt.GOOGLE_CLIENT_SECRET]) as file:
+        with open(config_tokens.google_secret) as file:
             client_id = json.loads(file.read())["installed"]["client_id"]
             id_token.verify_oauth2_token(value, requests.Request(), client_id)
     except Exception:
-        raise HTTPException(status_code=403, detail=params[cnt.MSG_ACCESS_DENIED])
+        raise HTTPException(status_code=403, detail=ResponseModels.access_denied.msg_text)
 
     return value
 
