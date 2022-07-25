@@ -16,6 +16,7 @@ class TokensParams:
     refresh_token_life_span: int
     bits: int
     issuer: str
+    google_secret: str
 
 
 @dataclass

@@ -28,6 +28,7 @@ class Parser:
                 refresh_token_life_span=data_tokens[c.REFRESH_TOKEN_LIFE_SPAN],
                 bits=data_tokens[c.BITS],
                 issuer=data_tokens[c.ISSUER],
+                google_secret=data_tokens[c.GOOGLE_CLIENT_SECRET]
             ),
             server=m.ServerParams(protocol=data_server[c.PROTOCOL], host=data_server[c.HOST], port=data_server[c.PORT]),
             database=m.DatabaseParams(
