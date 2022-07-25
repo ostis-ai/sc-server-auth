@@ -1,27 +1,50 @@
-from typing import Optional
+from enum import Enum
 
 import jwt
 from fastapi import HTTPException
 from pydantic import BaseModel
 from pydantic.class_validators import validator
+from pydantic.dataclasses import dataclass
 
-from sc_server_auth.config import params
-from sc_server_auth.server import constants as cnt
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.parser import get_config
+from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
+from sc_server_auth.server.keys import generate_keys_if_not_exist
+
+config_tokens = get_config().tokens
+
+
+class LifeSpan(Enum):
+    ACCESS = config_tokens.access_token_life_span
+    REFRESH = config_tokens.refresh_token_life_span
+
+
+class ResponseModel(BaseModel):
+    msg_code: str
+    msg_text: str
+
+
+@dataclass(init=False, frozen=True)
+class ResponseModels:
+    all_done = ResponseModel(msg_code="0", msg_text="All done")
+    invalid_username = ResponseModel(msg_code="1", msg_text="User name is incorrect")
+    invalid_password = ResponseModel(msg_code="2", msg_text="User password is incorrect")
+    user_not_found = ResponseModel(msg_code="3", msg_text="User not found in database")
+    user_is_in_base = ResponseModel(msg_code="4", msg_text="User already exists in database")
+    sc_server_error = ResponseModel(msg_code="5", msg_text="An error has occurred on sc-server")
+    access_denied = ResponseModel(msg_code="6", msg_text="Access denied")
+    invalid_request = ResponseModel(msg_code="7", msg_text="Invalid request")
+    token_expired = ResponseModel(msg_code="8", msg_text="Token expired")
 
 
 def _validate_token(value):
+    generate_keys_if_not_exist()
     try:
-        with open(params[cnt.PUBLIC_KEY_PATH], "rb") as file:
+        with open(PUBLIC_KEY_PATH, "rb") as file:
             public_key = file.read()
-            jwt.decode(value, public_key, issuer=params[cnt.ISSUER], algorithm="RS256")
-    except (
-        jwt.exceptions.InvalidTokenError,
-        jwt.exceptions.InvalidSignatureError,
-        jwt.exceptions.InvalidIssuerError,
-        jwt.exceptions.ExpiredSignatureError,
-        FileNotFoundError,
-    ):
-        raise HTTPException(status_code=403, detail=params[cnt.MSG_ACCESS_DENIED])
+        jwt.decode(value, public_key, issuer=config_tokens.issuer, algorithm=cnt.RS256)
+    except jwt.exceptions.InvalidTokenError:
+        raise HTTPException(status_code=403, detail=ResponseModels.access_denied.msg_text)
     return value
 
 
@@ -51,11 +74,6 @@ class CreateUserModel(UserModel):
     password: str
     template: str
     args: dict
-
-
-class ResponseModel(BaseModel):
-    msg_code: str
-    msg_text: Optional[str] = None
 
 
 class GetTokensResponseModel(ResponseModel):

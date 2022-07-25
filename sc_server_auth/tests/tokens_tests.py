@@ -1,5 +1,5 @@
-from sc_server_auth.config import params
-from sc_server_auth.server import constants as cnt
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.server.models import ResponseModels
 from sc_server_auth.tests.common import BaseServerTestCase
 
 
@@ -7,13 +7,13 @@ class ServerTest(BaseServerTestCase):
     def test_get_tokens(self):
         response = self.test_client.post(url=self.tokens_url, json=self.get_tokens_request()).json()
 
-        self.assertEqual(int(response[cnt.MSG_CODE]), params[cnt.MSG_CODES][cnt.MSG_ALL_DONE])
+        self.assertEqual(response[cnt.MSG_CODE], ResponseModels.all_done.msg_code)
         self.assertTrue(response[cnt.ACCESS_TOKEN])
         self.assertTrue(response[cnt.REFRESH_TOKEN])
 
     def test_get_tokens_no_user_in_db(self):
         response = self.test_client.post(url=self.tokens_url, json=self.get_tokens_request(name="Stas")).json()
-        self.assertEqual(int(response[cnt.MSG_CODE]), params[cnt.MSG_CODES][cnt.MSG_USER_NOT_FOUND])
+        self.assertEqual(response[cnt.MSG_CODE], ResponseModels.user_not_found.msg_code)
 
     def test_get_tokens_empty(self):
         response = self.test_client.post(url=self.tokens_url).status_code
@@ -28,7 +28,7 @@ class ServerTest(BaseServerTestCase):
             url=self.access_token_url, json=self.get_token_request(token=refresh_token)
         ).json()
 
-        self.assertEqual(int(response[cnt.MSG_CODE]), params[cnt.MSG_CODES][cnt.MSG_ALL_DONE])
+        self.assertEqual(response[cnt.MSG_CODE], ResponseModels.all_done.msg_code)
         self.assertTrue(response[cnt.ACCESS_TOKEN])
 
     def test_get_access_token_wrong(self):

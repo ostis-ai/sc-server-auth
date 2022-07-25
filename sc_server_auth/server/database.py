@@ -2,9 +2,11 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from sc_server_auth.config import db_engines, db_params
-from sc_server_auth.server import constants as cnt
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.parser import get_config
+from sc_server_auth.server.engines import db_engines
 
+config = get_config().database
 Base = declarative_base()
 
 
@@ -24,7 +26,7 @@ class User(Base):
 
 class DataBase:
     def __init__(self) -> None:
-        self.engine = db_engines[db_params[cnt.DATABASE]]()
+        self.engine = db_engines[config.database.value]()
         self.session = None
         Base.metadata.create_all(self.engine, checkfirst=True)
         self._session().commit()

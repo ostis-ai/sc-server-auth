@@ -2,16 +2,19 @@ import unittest
 
 from fastapi.testclient import TestClient
 
-from sc_server_auth.config import BASE_AUTH_SERVER_URL, params
+import sc_server_auth.configs.constants as cnt
+from sc_server_auth.configs.parser import get_config
 from sc_server_auth.main import app
-from sc_server_auth.server import constants as cnt
+
+config = get_config()
 
 
 class BaseServerTestCase(unittest.TestCase):
-    tokens_url = BASE_AUTH_SERVER_URL + params[cnt.GET_TOKENS_ENDPOINT]
-    access_token_url = BASE_AUTH_SERVER_URL + params[cnt.GET_ACCESS_TOKEN_ENDPOINT]
-    user_url = BASE_AUTH_SERVER_URL + params[cnt.USER_ENDPOINT]
-    users_url = BASE_AUTH_SERVER_URL + params[cnt.USERS_ENDPOINT]
+    base_url = f"{config.server.protocol}{config.server.host}:{config.server.port}"
+    tokens_url = f"{base_url}/auth/get_tokens"
+    access_token_url = f"{base_url}/auth/get_access_token"
+    user_url = f"{base_url}/admin/user"
+    users_url = f"{base_url}/admin/users"
     test_client = TestClient(app)
 
     @staticmethod

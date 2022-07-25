@@ -1,0 +1,25 @@
+# DEV
+
+[common]
+log_level = "INFO"
+
+[tokens]
+access_token_life_span = 1800
+refresh_token_life_span = 2_592_000
+bits = 2048
+issuer = "sc-auth-server"
+
+[server]
+protocol = "http://"
+host = "127.0.0.1"
+port = 5000
+
+[database]
+database = "sqlite"
+
+[database.postgres]
+user = "sc_auth"
+password = "sc_auth"
+name = "sc_auth"
+host = "127.0.0.1"
+isolation_level = "READ COMMITTED"
