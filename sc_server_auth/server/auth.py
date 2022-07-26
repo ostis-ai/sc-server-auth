@@ -4,8 +4,6 @@ from os.path import isfile
 import jwt
 import OpenSSL.crypto as crypto
 from fastapi.routing import APIRouter
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
 
 import sc_server_auth.configs.constants as c
 import sc_server_auth.server.models as m
