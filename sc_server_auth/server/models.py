@@ -1,4 +1,5 @@
-from typing import Optional
+import json
+from enum import Enum
 
 import jwt
 from fastapi import HTTPException
@@ -14,7 +15,6 @@ from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
 from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 config_tokens = get_config().tokens
-
 
 
 class LifeSpan(Enum):
@@ -38,8 +38,6 @@ class ResponseModels:
     access_denied = ResponseModel(msg_code="6", msg_text="Access denied")
     invalid_request = ResponseModel(msg_code="7", msg_text="Invalid request")
     token_expired = ResponseModel(msg_code="8", msg_text="Token expired")
-# from sc_server_auth.config import params
-# from sc_server_auth.server import constants as cnt
 
 
 def _validate_google_token(value):
