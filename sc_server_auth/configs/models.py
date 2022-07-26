@@ -16,9 +16,14 @@ class TokensParams:
     refresh_token_life_span: int
     bits: int
     issuer: str
-    google_secret: str
-    google_profile_scope: str
-    google_local_server_port: int
+
+
+@dataclass
+class GoogleParams:
+    secret: str
+    scope: str
+    local_server_port: int
+    token_min_length: int
 
 
 @dataclass
@@ -56,6 +61,7 @@ class Config:
     tokens: TokensParams
     server: ServerParams
     database: DatabaseParams
+    google: GoogleParams
 
 
 @dataclass
@@ -66,4 +72,4 @@ class RunArgs:
     log_level: str = None
     reload: bool = False
     dot_env: Path = Path(".env")
-    google_secret: str = None
+    google_secret: Path = None

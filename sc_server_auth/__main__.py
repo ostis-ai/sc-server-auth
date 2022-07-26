@@ -21,7 +21,7 @@ def main():
     parser.add_argument("-r", "--reload", help="Reload server at changes", action="store_true")
     parser.add_argument("-e", "--dot-env", help=f"*.env file (default: {args.dot_env})", type=Path)
     parser.add_argument(
-        "-g", "--google-secret", help=f"Path to google client secret (default: {args.google_secret})", type=str
+        "-g", "--google-secret", help=f"Path to google client secret (default: {args.google_secret})", type=Path
     )
 
     parser.parse_args(namespace=args)

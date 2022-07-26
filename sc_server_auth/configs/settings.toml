@@ -8,7 +8,10 @@ access_token_life_span = 1800
 refresh_token_life_span = 2_592_000
 bits = 2048
 issuer = "sc-auth-server"
-google_secret = ""
+
+[google]
+google_token_min_length = 800
+google_secret = "googlr_secret.json"
 google_profile_scope = "https://www.googleapis.com/auth/userinfo.profile"
 google_local_server_port = 0
 

@@ -19,11 +19,11 @@ black = "^22.6.0"
 pylint = "2.13.7"
 isort = "^5.10.1"
 coverage = "^6.4.1"
-google-api-python-client = "^2.53.0"
-google-auth-oauthlib = "^0.5.2"
 psycopg2-binary = "^2.9.3"
 toml = "^0.10.2"
 python-dotenv = "^0.20.0"
+google-api-python-client = "^2.53.0"
+google-auth-oauthlib = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 

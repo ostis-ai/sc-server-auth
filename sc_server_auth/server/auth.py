@@ -86,9 +86,10 @@ async def get_access_token(token: m.TokenModel):
 
 @router.post("/get_google_token", response_model=m.GetAccessTokenResponseModel)
 async def get_google_token():
-    if os.path.exists(config.google_secret):
-        flow = InstalledAppFlow.from_client_secrets_file(config.google_secret, [config.google_profile_scope])
-        creds = flow.run_local_server(port=config.google_local_server_port)
+    google_config = get_config().google
+    if os.path.exists(google_config.secret):
+        flow = InstalledAppFlow.from_client_secrets_file(google_config.secret, [google_config.scope])
+        creds = flow.run_local_server(port=google_config.local_server_port)
         creds.refresh(Request())
 
         response = m.ResponseModels.all_done.dict()

@@ -50,13 +50,12 @@ USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"
 RS256 = "RS256"
 
-# paths
-SQLITE_DB_PATH = "sqlite_db_path"
-PRIVATE_KEY_PATH = "private_key"
-PUBLIC_KEY_PATH = "public_key"
+# google
+GOOGLE = "google"
 GOOGLE_SECRET = "google_secret"
 GOOGLE_PROFILE_SCOPE = "google_profile_scope"
 GOOGLE_LOCAL_SERVER_PORT = "google_local_server_port"
+GOOGLE_TOKEN_MIN_LENGTH = "google_token_min_length"
 
 # for new user generation
 RREL_1 = "rrel_1"

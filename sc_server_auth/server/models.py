@@ -15,6 +15,7 @@ from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
 from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 config_tokens = get_config().tokens
+google_config = get_config().google
 
 
 class LifeSpan(Enum):
@@ -42,7 +43,7 @@ class ResponseModels:
 
 def _validate_google_token(value):
     try:
-        with open(config_tokens.google_secret) as file:
+        with open(google_config.secret) as file:
             client_id = json.loads(file.read())["installed"]["client_id"]
             id_token.verify_oauth2_token(value, requests.Request(), client_id)
     except Exception:
@@ -63,7 +64,7 @@ def _validate_server_token(value):
 
 
 def _validate_token(value):
-    if len(value) > 800:
+    if len(value) > google_config.token_min_length:
         return _validate_google_token(value)
     else:
         return _validate_server_token(value)
