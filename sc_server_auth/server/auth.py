@@ -1,3 +1,4 @@
+import os
 import time
 
 import jwt
@@ -85,19 +86,21 @@ async def get_access_token(token: m.TokenModel):
 
 @router.post("/get_google_token", response_model=m.GetAccessTokenResponseModel)
 async def get_google_token():
-    flow = InstalledAppFlow.from_client_secrets_file(
-        config.google_secret, ["https://www.googleapis.com/auth/userinfo.profile"]
-    )
-    creds = flow.run_local_server(port=0)
-    creds.refresh(Request())
+    if os.path.exists(config.google_secret):
+        flow = InstalledAppFlow.from_client_secrets_file(config.google_secret, [config.google_profile_scope])
+        creds = flow.run_local_server(port=config.google_local_server_port)
+        creds.refresh(Request())
 
-    response = m.ResponseModels.all_done.dict()
-    response.update(
-        {
-            c.ACCESS_TOKEN: {
-                c.TOKEN: creds.id_token,
+        response = m.ResponseModels.all_done.dict()
+        response.update(
+            {
+                c.ACCESS_TOKEN: {
+                    c.TOKEN: creds.id_token,
+                }
             }
-        }
-    )
+        )
+    else:
+        response = m.ResponseModels.sc_server_error.dict()
+
     log.debug(f"GetAccessToken response: " + str(response))
     return response

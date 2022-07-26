@@ -17,6 +17,8 @@ class TokensParams:
     bits: int
     issuer: str
     google_secret: str
+    google_profile_scope: str
+    google_local_server_port: int
 
 
 @dataclass
@@ -64,3 +66,4 @@ class RunArgs:
     log_level: str = None
     reload: bool = False
     dot_env: Path = Path(".env")
+    google_secret: str = None

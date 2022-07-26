@@ -28,7 +28,9 @@ class Parser:
                 refresh_token_life_span=data_tokens[c.REFRESH_TOKEN_LIFE_SPAN],
                 bits=data_tokens[c.BITS],
                 issuer=data_tokens[c.ISSUER],
-                google_secret=data_tokens[c.GOOGLE_CLIENT_SECRET],
+                google_secret=data_tokens[c.GOOGLE_SECRET],
+                google_profile_scope=data_tokens[c.GOOGLE_PROFILE_SCOPE],
+                google_local_server_port=data_tokens[c.GOOGLE_LOCAL_SERVER_PORT],
             ),
             server=m.ServerParams(protocol=data_server[c.PROTOCOL], host=data_server[c.HOST], port=data_server[c.PORT]),
             database=m.DatabaseParams(
@@ -59,6 +61,8 @@ class Parser:
             config.database.database = args.database
         if args.log_level:
             config.common.log_level = args.log_level
+        if args.google_secret:
+            config.tokens.google_secret = args.google_secret
 
     @classmethod
     def _load_dotenv_args(cls, args: m.RunArgs) -> None:

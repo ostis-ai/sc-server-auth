@@ -20,6 +20,10 @@ def main():
     parser.add_argument("-l", "--log-level", help=f"Logging level (default: {config.common.log_level})", type=str)
     parser.add_argument("-r", "--reload", help="Reload server at changes", action="store_true")
     parser.add_argument("-e", "--dot-env", help=f"*.env file (default: {args.dot_env})", type=Path)
+    parser.add_argument(
+        "-g", "--google-secret", help=f"Path to google client secret (default: {args.google_secret})", type=str
+    )
+
     parser.parse_args(namespace=args)
     Parser.set_config_args(args)
     config = Parser.get_config()

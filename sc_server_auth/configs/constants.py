@@ -54,7 +54,9 @@ RS256 = "RS256"
 SQLITE_DB_PATH = "sqlite_db_path"
 PRIVATE_KEY_PATH = "private_key"
 PUBLIC_KEY_PATH = "public_key"
-GOOGLE_CLIENT_SECRET = "google_client_secret"
+GOOGLE_SECRET = "google_secret"
+GOOGLE_PROFILE_SCOPE = "google_profile_scope"
+GOOGLE_LOCAL_SERVER_PORT = "google_local_server_port"
 
 # for new user generation
 RREL_1 = "rrel_1"
