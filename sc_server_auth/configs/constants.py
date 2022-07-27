@@ -52,7 +52,7 @@ RS256 = "RS256"
 
 # google
 GOOGLE = "google"
-GOOGLE_SECRET = "google_secret"
+GOOGLE_SECRET_PATH = "google_secret_path"
 GOOGLE_PROFILE_SCOPE = "google_profile_scope"
 GOOGLE_LOCAL_SERVER_PORT = "google_local_server_port"
 GOOGLE_TOKEN_MIN_LENGTH = "google_token_min_length"

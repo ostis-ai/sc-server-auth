@@ -11,7 +11,7 @@ issuer = "sc-auth-server"
 
 [google]
 google_token_min_length = 800
-google_secret = "googlr_secret.json"
+google_secret_path = "google_secret.json"
 google_profile_scope = "https://www.googleapis.com/auth/userinfo.profile"
 google_local_server_port = 0
 
@@ -19,7 +19,6 @@ google_local_server_port = 0
 protocol = "http://"
 host = "127.0.0.1"
 port = 5000
-
 
 [database]
 database = "sqlite"

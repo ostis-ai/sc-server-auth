@@ -32,9 +32,9 @@ class Parser:
             ),
             google=m.GoogleParams(
                 scope=data_google[c.GOOGLE_PROFILE_SCOPE],
-                secret=data_google[c.GOOGLE_SECRET],
+                secret_path=data_google[c.GOOGLE_SECRET_PATH],
                 local_server_port=data_google[c.GOOGLE_LOCAL_SERVER_PORT],
-                token_min_length=data_google[c.GOOGLE_TOKEN_MIN_LENGTH]
+                token_min_length=data_google[c.GOOGLE_TOKEN_MIN_LENGTH],
             ),
             server=m.ServerParams(protocol=data_server[c.PROTOCOL], host=data_server[c.HOST], port=data_server[c.PORT]),
             database=m.DatabaseParams(
@@ -65,8 +65,8 @@ class Parser:
             config.database.database = args.database
         if args.log_level:
             config.common.log_level = args.log_level
-        if args.google_secret:
-            config.google.secret = args.google_secret
+        if args.google_secret_path:
+            config.google.secret_path = args.google_secret_path
 
     @classmethod
     def _load_dotenv_args(cls, args: m.RunArgs) -> None:

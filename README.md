@@ -86,8 +86,14 @@ For sorting imports and clean code with black run next command:
 To start auth-server run command:
 
 ```shell
-python3 -m sc_server_auth [-h] [-H HOST] [-p PORT] [-d DATABASE] [-l LOG_LEVEL] [-r] [-e DOT_ENV] [-g GOOGLE_SECRET_FILE_PATH]
+python -m sc_server_auth [-h] [-H HOST] [-p PORT] [-d DATABASE] [-l LOG_LEVEL] [-r] [-e DOT_ENV] [-g GOOGLE_SECRET_FILE_PATH]
 ```
+
+Google secret file you can get in [Google Developer Console](https://console.developers.google.com/)
+
+Creating project [tutorial](https://developers.google.com/workspace/guides/create-project)
+Getting client_secret.json file [tutorial](https://help.talend.com/r/en-US/7.2/google-drive/how-to-access-google-drive-using-client-secret-json-file-the)
+By default secret file located in the root folder.
 
 After server running you can check endpoints docs by link: http://127.0.0.1:5000/docs
 

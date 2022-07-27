@@ -20,7 +20,7 @@ class TokensParams:
 
 @dataclass
 class GoogleParams:
-    secret: str
+    secret_path: Path
     scope: str
     local_server_port: int
     token_min_length: int
@@ -72,4 +72,4 @@ class RunArgs:
     log_level: str = None
     reload: bool = False
     dot_env: Path = Path(".env")
-    google_secret: Path = None
+    google_secret_path: str = None

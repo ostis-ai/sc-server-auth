@@ -43,7 +43,7 @@ class ResponseModels:
 
 def _validate_google_token(value):
     try:
-        with open(google_config.secret) as file:
+        with open(google_config.secret_path) as file:
             client_id = json.loads(file.read())["installed"]["client_id"]
             id_token.verify_oauth2_token(value, requests.Request(), client_id)
     except Exception:
