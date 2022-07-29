@@ -1,7 +1,10 @@
+import os
 import time
 
 import jwt
 from fastapi.routing import APIRouter
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 import sc_server_auth.configs.constants as c
 import sc_server_auth.server.models as m
@@ -77,5 +80,28 @@ async def get_access_token(token: m.TokenModel):
                 }
             }
         )
+    log.debug(f"GetAccessToken response: " + str(response))
+    return response
+
+
+@router.post("/get_google_token", response_model=m.GetAccessTokenResponseModel)
+async def get_google_token():
+    google_config = get_config().google
+    if os.path.exists(google_config.secret_path):
+        flow = InstalledAppFlow.from_client_secrets_file(google_config.secret_path, [google_config.scope])
+        creds = flow.run_local_server(port=google_config.local_server_port)
+        creds.refresh(Request())
+
+        response = m.ResponseModels.all_done.dict()
+        response.update(
+            {
+                c.ACCESS_TOKEN: {
+                    c.TOKEN: creds.id_token,
+                }
+            }
+        )
+    else:
+        response = m.ResponseModels.sc_server_error.dict()
+
     log.debug(f"GetAccessToken response: " + str(response))
     return response

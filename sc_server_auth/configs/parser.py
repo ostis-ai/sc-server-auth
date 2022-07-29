@@ -20,6 +20,7 @@ class Parser:
         data_server = data[c.SERVER]
         data_database = data[c.DATABASE]
         data_postgres = data_database[c.POSTGRES]
+        data_google = data[c.GOOGLE]
 
         cls._config = m.Config(
             common=m.CommonParams(log_level=data_common[c.LOG_LEVEL]),
@@ -28,6 +29,12 @@ class Parser:
                 refresh_token_life_span=data_tokens[c.REFRESH_TOKEN_LIFE_SPAN],
                 bits=data_tokens[c.BITS],
                 issuer=data_tokens[c.ISSUER],
+            ),
+            google=m.GoogleParams(
+                scope=data_google[c.GOOGLE_PROFILE_SCOPE],
+                secret_path=data_google[c.GOOGLE_SECRET_PATH],
+                local_server_port=data_google[c.GOOGLE_LOCAL_SERVER_PORT],
+                token_min_length=data_google[c.GOOGLE_TOKEN_MIN_LENGTH],
             ),
             server=m.ServerParams(protocol=data_server[c.PROTOCOL], host=data_server[c.HOST], port=data_server[c.PORT]),
             database=m.DatabaseParams(
@@ -58,6 +65,8 @@ class Parser:
             config.database.database = args.database
         if args.log_level:
             config.common.log_level = args.log_level
+        if args.google_secret_path:
+            config.google.secret_path = args.google_secret_path
 
     @classmethod
     def _load_dotenv_args(cls, args: m.RunArgs) -> None:

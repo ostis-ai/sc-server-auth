@@ -19,6 +19,14 @@ class TokensParams:
 
 
 @dataclass
+class GoogleParams:
+    secret_path: Path
+    scope: str
+    local_server_port: int
+    token_min_length: int
+
+
+@dataclass
 class ServerParams:
     protocol: str
     host: str
@@ -53,6 +61,7 @@ class Config:
     tokens: TokensParams
     server: ServerParams
     database: DatabaseParams
+    google: GoogleParams
 
 
 @dataclass
@@ -63,3 +72,4 @@ class RunArgs:
     log_level: str = None
     reload: bool = False
     dot_env: Path = Path(".env")
+    google_secret_path: str = None

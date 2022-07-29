@@ -1,7 +1,10 @@
+import json
 from enum import Enum
 
 import jwt
 from fastapi import HTTPException
+from google.auth.transport import requests
+from google.oauth2 import id_token
 from pydantic import BaseModel
 from pydantic.class_validators import validator
 from pydantic.dataclasses import dataclass
@@ -12,6 +15,7 @@ from sc_server_auth.configs.paths import PUBLIC_KEY_PATH
 from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 config_tokens = get_config().tokens
+google_config = get_config().google
 
 
 class LifeSpan(Enum):
@@ -37,7 +41,18 @@ class ResponseModels:
     token_expired = ResponseModel(msg_code="8", msg_text="Token expired")
 
 
-def _validate_token(value):
+def _validate_google_token(value):
+    try:
+        with open(google_config.secret_path) as file:
+            client_id = json.loads(file.read())["installed"]["client_id"]
+            id_token.verify_oauth2_token(value, requests.Request(), client_id)
+    except Exception:
+        raise HTTPException(status_code=403, detail=ResponseModels.access_denied.msg_text)
+
+    return value
+
+
+def _validate_server_token(value):
     generate_keys_if_not_exist()
     try:
         with open(PUBLIC_KEY_PATH, "rb") as file:
@@ -46,6 +61,13 @@ def _validate_token(value):
     except jwt.exceptions.InvalidTokenError:
         raise HTTPException(status_code=403, detail=ResponseModels.access_denied.msg_text)
     return value
+
+
+def _validate_token(value):
+    if len(value) > google_config.token_min_length:
+        return _validate_google_token(value)
+    else:
+        return _validate_server_token(value)
 
 
 class TokenModel(BaseModel):
