@@ -53,13 +53,13 @@ class TestUsers(BaseServerTestCase):
         self.assertEqual(int(response[cnt.MSG_CODE]), 1)
 
     def test_get_users(self):
-        response = self.test_client.get(url=self.users_url, json=self.get_token_request(self.access_token)).json()
+        response = self.test_client.post(url=self.users_url, json=self.get_token_request(self.access_token)).json()
         self.assertEqual(type(response), list)
 
     def test_get_users_empty(self):
-        response = self.test_client.get(url=self.users_url).status_code
+        response = self.test_client.post(url=self.users_url).status_code
         self.assertEqual(response, 422)
 
     def test_get_users_wrong_token(self):
-        response = self.test_client.get(url=self.users_url, json=self.get_token_request()).json()
+        response = self.test_client.post(url=self.users_url, json=self.get_token_request()).json()
         self.assertEqual(response["detail"], ResponseModels.access_denied.msg_text)
