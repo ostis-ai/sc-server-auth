@@ -50,7 +50,7 @@ async def delete_user(user: m.UserModel):
     return response
 
 
-@router.get("/users")
+@router.post("/users")
 async def get_users(request: m.TokenModel):
     user_info = request.dict()
     log.debug(f"GetUserList request: " + str(user_info))
