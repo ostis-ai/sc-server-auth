@@ -27,7 +27,7 @@ def verify_user_info_in_database(database: DataBase, name: str, password: str) -
 
 @router.post("/user", response_model=m.ResponseModel)
 async def create_user(user: m.CreateUserModel):
-    log.debug(f"CreateUser request: " + str(user.dict()))
+    log.debug(f"CreateUser request: " + str(user.dict(exclude={"password"})))
     database = DataBase()
     response_model = verify_user_info_in_database(database, user.name, user.password)
     if response_model == m.ResponseModels.all_done:

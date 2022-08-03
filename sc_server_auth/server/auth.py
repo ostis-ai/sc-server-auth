@@ -35,7 +35,7 @@ def _generate_token(life_span: m.LifeSpan, username: str) -> bytes:
 
 @router.post("/get_tokens", response_model=m.GetTokensResponseModel)
 async def get_tokens(creds: m.CredentialsModel):
-    log.debug(f"GetTokens request: " + str(creds.dict()))
+    log.debug(f"GetTokens request: " + str(creds.dict(exclude={"password"})))
     database = DataBase()
     log.debug(f"Username: " + creds.name)
     if database.is_user_valid(creds.name, hash_password(creds.password)):
