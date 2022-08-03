@@ -20,6 +20,11 @@ protocol = "http://"
 host = "127.0.0.1"
 port = 5000
 
+[hashing]
+name = "sha256"
+salt = "f20f727b98129f0827fd5f1f2d734684"
+iters = 100_000
+
 [database]
 database = "sqlite"
 

@@ -26,7 +26,7 @@ class BaseServerTestCase(unittest.TestCase):
         return {cnt.ACCESS_TOKEN: token, cnt.NAME: name}
 
     @staticmethod
-    def get_tokens_request(name="admin", password="a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"):
+    def get_tokens_request(name="admin", password="aB1234"):
         return {cnt.NAME: name, cnt.PASSWORD: password}
 
     @staticmethod

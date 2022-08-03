@@ -1,6 +1,7 @@
 # config
 COMMON = "common"
 TOKENS = "tokens"
+HASHING = "hashing"
 SERVER = "server"
 SC_SERVER = "sc_server"
 DATABASE = "database"
@@ -49,6 +50,10 @@ ISSUER = "issuer"
 USERNAME = "username"
 TOKEN_QUERY_ARG = "token_query_arg"
 RS256 = "RS256"
+
+# hashing
+SALT = "salt"
+ITERS = "iters"
 
 # google
 GOOGLE = "google"
