@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from getpass import getpass
 
 from sc_server_auth.configs.log import get_default_logger
-from sc_server_auth.configs.models import Database
+from sc_server_auth.configs.models import Database as DatabaseType
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.server.admin import verify_user_info_in_database
 from sc_server_auth.server.database import DataBase
@@ -15,7 +15,7 @@ logger = get_default_logger(__name__)
 
 @dataclass
 class CreateAdminArgs:
-    database: Database = None
+    database: DatabaseType = None
     name: str = None
     password: str = None
 
@@ -26,7 +26,7 @@ def main():
 
     parser = ArgumentParser(prog="python -m sc_server_auth.create_admin", description="Create admin and add to db")
     parser.add_argument(
-        "-d", "--database", help=f"Database system (default: {config_database.database.value})", type=Database
+        "-d", "--database", help=f"Database system (default: {config_database.database.value})", type=DatabaseType
     )
     parser.add_argument("-n", "-l", "--name", "--login", type=str)
     parser.add_argument("-p", "--password", type=str)
