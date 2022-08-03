@@ -4,6 +4,7 @@ import sc_server_auth.configs.constants as c
 import sc_server_auth.server.models as m
 from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.server.database import DataBase
+from sc_server_auth.server.hashing import hash_password
 from sc_server_auth.server.verifiers import password_verifier, username_verifier
 
 log = get_file_only_logger(__name__)
@@ -14,7 +15,7 @@ router = APIRouter(
 )
 
 
-def _verify_user_info_in_database(database: DataBase, name: str, password: str) -> m.ResponseModel:
+def verify_user_info_in_database(database: DataBase, name: str, password: str) -> m.ResponseModel:
     if not username_verifier(name):
         return m.ResponseModels.invalid_username
     if not password_verifier(password):
@@ -26,13 +27,11 @@ def _verify_user_info_in_database(database: DataBase, name: str, password: str) 
 
 @router.post("/user", response_model=m.ResponseModel)
 async def create_user(user: m.CreateUserModel):
-    user_info = user.dict()
-    log.debug(f"CreateUser request: " + str(user_info))
-    name, password = user_info[c.NAME], user_info[c.PASSWORD]
+    log.debug(f"CreateUser request: " + str(user.dict()))
     database = DataBase()
-    response_model = _verify_user_info_in_database(database, name, password)
+    response_model = verify_user_info_in_database(database, user.name, user.password)
     if response_model == m.ResponseModels.all_done:
-        database.add_user(name, password)
+        database.add_user(user.name, hash_password(user.password))
     response = response_model.dict()
     log.debug(f"CreateUser response: " + str(response))
     return response

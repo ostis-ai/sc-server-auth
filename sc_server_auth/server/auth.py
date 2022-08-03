@@ -12,6 +12,7 @@ from sc_server_auth.configs.log import get_file_only_logger
 from sc_server_auth.configs.parser import get_config
 from sc_server_auth.configs.paths import PRIVATE_KEY_PATH, PUBLIC_KEY_PATH
 from sc_server_auth.server.database import DataBase
+from sc_server_auth.server.hashing import hash_password
 from sc_server_auth.server.keys import generate_keys_if_not_exist
 
 log = get_file_only_logger(__name__)
@@ -33,15 +34,13 @@ def _generate_token(life_span: m.LifeSpan, username: str) -> bytes:
 
 
 @router.post("/get_tokens", response_model=m.GetTokensResponseModel)
-async def get_tokens(credentials: m.CredentialsModel):
-    credentials_dict = credentials.dict()
-    log.debug(f"GetTokens request: " + str(credentials_dict))
+async def get_tokens(creds: m.CredentialsModel):
+    log.debug(f"GetTokens request: " + str(creds.dict()))
     database = DataBase()
-    username, password = credentials_dict.values()
-    log.debug(f"Username: " + str(username))
-    if database.is_user_valid(username, password):
-        access_token_data = _generate_token(m.LifeSpan.ACCESS, str(username))
-        refresh_token_data = _generate_token(m.LifeSpan.REFRESH, str(username))
+    log.debug(f"Username: " + creds.name)
+    if database.is_user_valid(creds.name, hash_password(creds.password)):
+        access_token_data = _generate_token(m.LifeSpan.ACCESS, creds.name)
+        refresh_token_data = _generate_token(m.LifeSpan.REFRESH, creds.name)
         response = m.ResponseModels.all_done.dict()
         response.update(
             {
