@@ -1,12 +1,12 @@
 import hashlib
 
-_HASH_NAME = "sha256"
-_SALT = b"\xf2\x0fr{\x98\x12\x9f\x08'\xfd_\x1f-sF\x84"
-_HASH_ITERS = 100_000
+from sc_server_auth.configs.parser import get_config
+
+config = get_config().hashing
 
 
 def hash_password(password: str) -> str:
-    enc = hashlib.pbkdf2_hmac(_HASH_NAME, password.encode(), _SALT, _HASH_ITERS)
+    enc = hashlib.pbkdf2_hmac(config.name, password.encode(), config.salt, config.iters)
     return enc.hex()
 
 

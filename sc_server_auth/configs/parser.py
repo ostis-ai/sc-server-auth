@@ -17,6 +17,7 @@ class Parser:
         data = toml.load(CONFIG_PATH)
         data_common = data[c.COMMON]
         data_tokens = data[c.TOKENS]
+        data_hashing = data[c.HASHING]
         data_server = data[c.SERVER]
         data_database = data[c.DATABASE]
         data_postgres = data_database[c.POSTGRES]
@@ -29,6 +30,11 @@ class Parser:
                 refresh_token_life_span=data_tokens[c.REFRESH_TOKEN_LIFE_SPAN],
                 bits=data_tokens[c.BITS],
                 issuer=data_tokens[c.ISSUER],
+            ),
+            hashing=m.HashingParams(
+                name=data_hashing[c.NAME],
+                salt=bytes.fromhex(data_hashing[c.SALT]),
+                iters=data_hashing[c.ITERS],
             ),
             google=m.GoogleParams(
                 scope=data_google[c.GOOGLE_PROFILE_SCOPE],

@@ -19,6 +19,13 @@ class TokensParams:
 
 
 @dataclass
+class HashingParams:
+    name: str
+    salt: bytes
+    iters: int
+
+
+@dataclass
 class GoogleParams:
     secret_path: Path
     scope: str
@@ -59,6 +66,7 @@ class DatabaseParams:
 class Config:
     common: CommonParams
     tokens: TokensParams
+    hashing: HashingParams
     server: ServerParams
     database: DatabaseParams
     google: GoogleParams
