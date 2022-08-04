@@ -30,4 +30,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: ${{ steps.changelog_reader.outputs.changes }}
-          name: 'v${{ github.ref_name }}'
+          name: '${{ github.ref_name }}'
