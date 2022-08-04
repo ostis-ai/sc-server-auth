@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Endpoint for getting users list;
  - Tests infrastructure for endpoints;
  - Code linting tools: isort, pylint, black;
- - CI-workflows for checking messages of commits, code linting and testing 
+ - CI workflows for checking messages of commits, code linting and testing 
 package on multiple environments and python versions;
- - Scripts for admin creating, local CI-checks and sort python imports;
+ - Scripts for admin creating, local CI checks and sort python imports;
  - README.md;
