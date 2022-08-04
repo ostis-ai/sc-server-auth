@@ -8,18 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v0.1.0]
 ### Added
- - README file;
+ - Support of PostgreSQL and SQLite;
  - Data classes of the sc-server for objects manipulating;
- - Support of PostgreSQL;
- - Password validation;
+ - Password validation (supported hash of password);
  - Endpoint for getting refresh and access token by username and password;
  - Endpoint for getting access token by refresh token;
  - Endpoint for getting access token by Google account;
- - Endpoint for creating user;
- - Endpoint for deleting user;
+ - Endpoints for creating/deleting user;
  - Endpoint for getting users list;
  - Tests infrastructure for endpoints;
  - Code linting tools: isort, pylint, black;
- - CI for checking messages of commits;
- - CI for code linting;
- - CI for the testing package on multiple environments and python versions;
+ - CI-workflows for checking messages of commits, code linting and testing 
+package on multiple environments and python versions;
+ - Scripts for admin creating, local CI-checks and sort python imports;
+ - README.md;
